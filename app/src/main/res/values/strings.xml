@@ -11,4 +11,11 @@
     <string name="description_logo">Find a restaurant and invite your co-workers for lunch!</string>
     <string name="sign_in_with_facebook">Sign in with facebook</string>
     <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI</string>
+    <string name="default_info_title">default marker title</string>
+    <string name="default_info_snippet">default info snippet</string>
+    <string name="pick_place">Pick a place</string>
+    <string name="title_activity_maps2">Map</string>
+    <string name="option_get_place">Get place</string>
 </resources>

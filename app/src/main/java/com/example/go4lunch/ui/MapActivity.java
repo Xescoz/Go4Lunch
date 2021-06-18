@@ -12,6 +12,10 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.jetbrains.annotations.NotNull;
+
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class MapActivity extends AppCompatActivity {
 
     private ActivityMapBinding binding;
@@ -22,6 +26,15 @@ public class MapActivity extends AppCompatActivity {
         initBinding();
         initListener();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions, @NotNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
     public void initBinding(){
         binding = ActivityMapBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
