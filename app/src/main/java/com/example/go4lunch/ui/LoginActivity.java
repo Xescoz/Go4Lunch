@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.go4lunch.R;
@@ -29,11 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initBinding();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         signIn();
     }
 
@@ -72,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
+                .setIsSmartLockEnabled(false)
                 .setAvailableProviders(providers)
                 .setAuthMethodPickerLayout(firebaseLayout)
                 .build();
@@ -90,13 +87,13 @@ public class LoginActivity extends AppCompatActivity {
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
             // ...
+            login();
         }
     }
 
     private void login(){
-        Intent intent = new Intent(LoginActivity.this,MapsActivity.class);
+        Intent intent = new Intent(LoginActivity.this,MapActivity.class);
         startActivity(intent);
     }
-
 
 }
