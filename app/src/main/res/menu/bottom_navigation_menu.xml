@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/map_action"
+        android:enabled="true"
+        android:icon="@drawable/map_vector"
+        android:title="@string/map_view"/>
+    <item
+        android:id="@+id/list_action"
+        android:enabled="true"
+        android:icon="@drawable/view_list_vector"
+        android:title="@string/list_view"/>
+    <item
+        android:id="@+id/workmates_action"
+        android:enabled="true"
+        android:icon="@drawable/people_vector"
+        android:title="@string/workmates"/>
+</menu>

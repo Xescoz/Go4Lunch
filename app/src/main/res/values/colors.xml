@@ -9,4 +9,5 @@
     <color name="black_transparent">#D9000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="google_red">#B31B1B</color>
+    <color name="orange">#f59e42</color>
 </resources>

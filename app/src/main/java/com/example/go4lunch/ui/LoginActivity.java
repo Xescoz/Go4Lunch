@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.go4lunch.R;
@@ -92,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(){
-        Intent intent = new Intent(LoginActivity.this,MapActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
 

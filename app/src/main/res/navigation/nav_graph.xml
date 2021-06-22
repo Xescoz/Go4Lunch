@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@+id/nav_start">
+
+    <fragment
+        android:id="@+id/nav_start"
+        android:name="com.example.go4lunch.ui.MapsFragment"
+        android:label="@string/hungry"
+        tools:layout="@layout/fragment_maps" />
+</navigation>
