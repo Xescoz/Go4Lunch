@@ -11,58 +11,60 @@
         android:id="@+id/lunch_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/lunch_background"
         android:scaleType="fitXY"
+        android:src="@drawable/lunch_background"
         android:tint="@color/black_transparent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="UseAppTint" />
 
     <ImageView
         android:id="@+id/profile_picture"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/profile_margin"
         android:src="@drawable/com_facebook_profile_picture_blank_portrait"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginBottom="@dimen/profile_margin"
-        android:layout_marginLeft="@dimen/fab_margin" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/go4lunch"
-        android:textSize="50sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
-        android:textColor="@color/white"/>
+        android:text="@string/go4lunch"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/profile_email_address"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/profile_picture"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="40dp"
+        android:text="@string/sign_in_with_email"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/sign_in_with_email"
-        android:layout_marginBottom="40dp"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginLeft="@dimen/fab_margin" />
+        app:layout_constraintStart_toEndOf="@id/profile_picture" />
 
     <TextView
         android:id="@+id/profile_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/profile_picture"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="8dp"
+        android:text="@string/sign_in_with_email"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@id/profile_email_address"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/sign_in_with_email"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginLeft="@dimen/fab_margin" />
+        app:layout_constraintStart_toEndOf="@id/profile_picture" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

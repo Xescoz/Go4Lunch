@@ -10,4 +10,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="google_red">#B31B1B</color>
     <color name="orange">#f59e42</color>
+    <color name="grey">#525252</color>
+    <color name="light_grey">#9e9e9e</color>
+    <color name="dark_white">#f0f0f0</color>
+    <color name="separator_grey">#d4d4d4</color>
 </resources>

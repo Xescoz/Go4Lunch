@@ -22,6 +22,11 @@ public class Restaurant {
     private String image;
 
     /**
+     * Distance from the restaurant
+     */
+    private String distance;
+
+    /**
      * Opening time of the restaurant
      */
     private String openingTime;
@@ -31,13 +36,36 @@ public class Restaurant {
      */
     private String rating;
 
-    public Restaurant(long id, String name, String address, String image, String openingTime, String rating){
+    /**
+     * Number of person in the restaurant
+     */
+    private int numberPersons;
+
+    public Restaurant(long id, String name, String address, String image, String distance, String openingTime, String rating, int numberPersons) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.image = image;
+        this.distance = distance;
         this.openingTime = openingTime;
         this.rating = rating;
+        this.numberPersons = numberPersons;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public int getNumberPersons() {
+        return numberPersons;
+    }
+
+    public void setNumberPersons(int numberPersons) {
+        this.numberPersons = numberPersons;
     }
 
     public long getId() {

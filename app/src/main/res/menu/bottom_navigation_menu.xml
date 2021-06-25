@@ -4,15 +4,15 @@
         android:id="@+id/map_action"
         android:enabled="true"
         android:icon="@drawable/map_vector"
-        android:title="@string/map_view"/>
+        android:title="@string/map_view" />
     <item
         android:id="@+id/list_action"
         android:enabled="true"
         android:icon="@drawable/view_list_vector"
-        android:title="@string/list_view"/>
+        android:title="@string/list_view" />
     <item
         android:id="@+id/workmates_action"
         android:enabled="true"
         android:icon="@drawable/people_vector"
-        android:title="@string/workmates"/>
+        android:title="@string/workmates" />
 </menu>

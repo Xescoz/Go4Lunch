@@ -1,111 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/lunch_background">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/lunch_background"
         android:scaleType="fitXY"
+        android:src="@drawable/lunch_background"
         app:tint="@color/black_transparent" />
 
     <ImageView
         android:id="@+id/cup_of_coffee"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/cup_of_coffee"
         android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/cup_of_coffee"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/white" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/go4lunch"
-        android:textSize="50sp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/cup_of_coffee"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/cup_of_coffee" />
+
     <TextView
         android:id="@+id/title_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/description_logo"
-        android:textSize="10sp"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
         tools:ignore="SmallSp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/facebook_login_button"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="80dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/com_facebook_blue"
+        android:drawableLeft="@drawable/fui_ic_facebook_white_22dp"
         android:text="@string/fui_sign_in_with_facebook"
         android:textAllCaps="false"
-        android:backgroundTint="@color/com_facebook_blue"
-        app:layout_constraintTop_toBottomOf="@id/title_description"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:drawableLeft="@drawable/fui_ic_facebook_white_22dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_description" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/google_login_button"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/white"
+        android:drawableLeft="@drawable/fui_ic_googleg_color_24dp"
         android:text="@string/fui_sign_in_with_google"
         android:textAllCaps="false"
-        android:backgroundTint="@color/white"
         android:textColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/facebook_login_button"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:drawableLeft="@drawable/fui_ic_googleg_color_24dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/facebook_login_button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/twitter_login_button"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/fui_bgTwitter"
+        android:drawableLeft="@drawable/fui_ic_twitter_bird_white_24dp"
         android:text="@string/fui_sign_in_with_twitter"
         android:textAllCaps="false"
-        android:backgroundTint="@color/fui_bgTwitter"
-        app:layout_constraintTop_toBottomOf="@id/google_login_button"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:drawableLeft="@drawable/fui_ic_twitter_bird_white_24dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/google_login_button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/email_login_button"
         android:layout_width="0dp"
         android:layout_height="60dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="50dp"
+        android:backgroundTint="@color/fui_bgEmail"
+        android:drawableLeft="@drawable/fui_ic_mail_white_24dp"
         android:text="@string/sign_in_with_email"
         android:textAllCaps="false"
-        android:backgroundTint="@color/fui_bgEmail"
-        app:layout_constraintTop_toBottomOf="@id/twitter_login_button"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:drawableLeft="@drawable/fui_ic_mail_white_24dp" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/twitter_login_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
