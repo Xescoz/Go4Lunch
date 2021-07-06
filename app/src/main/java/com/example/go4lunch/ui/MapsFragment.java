@@ -49,7 +49,6 @@ public class MapsFragment extends Fragment {
     private Location lastKnownLocation;
 
     // Keys for storing activity state.
-    private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -104,7 +103,6 @@ public class MapsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if (map != null) {
-            outState.putParcelable(KEY_CAMERA_POSITION, map.getCameraPosition());
             outState.putParcelable(KEY_LOCATION, lastKnownLocation);
         }
         super.onSaveInstanceState(outState);
@@ -176,12 +174,9 @@ public class MapsFragment extends Fragment {
             return;
         }
         try {
-            if (locationPermissionGranted) {
-                map.setMyLocationEnabled(true);
-                map.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
-                map.setMyLocationEnabled(false);
-                map.getUiSettings().setMyLocationButtonEnabled(false);
+            map.setMyLocationEnabled(locationPermissionGranted);
+            map.getUiSettings().setMyLocationButtonEnabled(locationPermissionGranted);
+            if (!locationPermissionGranted) {
                 lastKnownLocation = null;
                 getLocationPermission();
             }

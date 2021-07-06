@@ -42,6 +42,7 @@ public class WorkmateRecyclerViewAdapter extends RecyclerView.Adapter<WorkmateRe
         Glide.with(context)
                 .load(workmate.getPicture())
                 .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.ic_baseline_account_circle_black)
                 .into(holder.binding.itemWorkmateImage);
 
         if (workmate.getRestaurant().isEmpty()) {

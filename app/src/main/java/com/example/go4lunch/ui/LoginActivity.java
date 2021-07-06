@@ -24,13 +24,21 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initBinding();
         initListener();
-        signIn();
+
+        auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            // If user is already logged it while login
+            login();
+        } else {
+            signIn();
+        }
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
@@ -43,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             }
     );
 
-    public void initBinding() {
+    private void initBinding() {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -53,7 +61,11 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn();
+                if (auth.getCurrentUser() != null) {
+                    login();
+                } else {
+                    signIn();
+                }
             }
         });
     }
@@ -100,6 +112,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
 }

@@ -52,6 +52,8 @@ public class WorkmatesListFragment extends Fragment {
         workmateList.add(workmate);
         Workmate workmate2 = new Workmate(2, "Bob", "", "https://i2.wp.com/zeeoii.com/wp-content/uploads/2020/07/heart-3840x2160-4k-hd-wallpaper-green-leaves-bush-10662.jpg?resize=1024%2C576&ssl=1");
         workmateList.add(workmate2);
+        Workmate workmate3 = new Workmate(3, "Banane", "", "");
+        workmateList.add(workmate3);
     }
 
     @Override

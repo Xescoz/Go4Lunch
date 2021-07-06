@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(user.getPhotoUrl())
                 .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.ic_baseline_account_circle_white)
                 .into(profilePicture);
     }
 
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 });
     }
