@@ -3,6 +3,7 @@ package com.example.go4lunch.ui;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.viewmodel.RestaurantViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,8 +50,12 @@ public class MapsFragment extends Fragment {
     // location retrieved by the Fused Location Provider.
     private Location lastKnownLocation;
 
+    private String location;
+
     // Keys for storing activity state.
     private static final String KEY_LOCATION = "location";
+
+    private RestaurantViewModel restaurantViewModel;
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -98,6 +104,8 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getContext());
+        restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
+
     }
 
     @Override
@@ -129,6 +137,7 @@ public class MapsFragment extends Fragment {
         }
     }
 
+
     /**
      * Gets the current location of the device, and positions the map's camera.
      */
@@ -150,6 +159,9 @@ public class MapsFragment extends Fragment {
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastKnownLocation.getLatitude(),
                                                 lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                location = lastKnownLocation.getLatitude()+","+lastKnownLocation.getLongitude();
+                                restaurantViewModel.getLocation(location);
+                                Log.d(TAG, "location = "+location);
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");

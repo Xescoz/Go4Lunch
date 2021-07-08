@@ -1,4 +1,4 @@
-package com.example.go4lunch.ui.List;
+package com.example.go4lunch.ui.list;
 
 import android.os.Bundle;
 

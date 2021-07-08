@@ -1,10 +1,12 @@
-package com.example.go4lunch.ui.List;
+package com.example.go4lunch.ui.list;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +16,9 @@ import android.view.ViewGroup;
 
 import com.example.go4lunch.databinding.FragmentRestaurantListBinding;
 import com.example.go4lunch.model.Restaurant;
+import com.example.go4lunch.model.RestaurantResults;
+import com.example.go4lunch.ui.MapsFragment;
+import com.example.go4lunch.viewmodel.RestaurantViewModel;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
@@ -27,9 +32,9 @@ import java.util.List;
 public class RestaurantListFragment extends Fragment {
 
     private RestaurantRecyclerViewAdapter adapter;
-    private final List<Restaurant> restaurantList = new ArrayList<>();
+    private RestaurantViewModel restaurantViewModel;
     private FragmentRestaurantListBinding binding;
-    private RecyclerView restaurantRecyclerView;
+    private List<Restaurant> restaurantsList = new ArrayList<>();
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,18 +68,25 @@ public class RestaurantListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initList();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
+        initList();
     }
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initList();
     }
 
     @Override
@@ -85,16 +97,16 @@ public class RestaurantListFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        adapter = new RestaurantRecyclerViewAdapter(restaurantList, this.getContext());
+        adapter = new RestaurantRecyclerViewAdapter(this.getContext(),restaurantsList);
         binding.restaurantRecyclerView.setAdapter(adapter);
         binding.restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
     private void initList() {
-        Restaurant restaurant = new Restaurant(1, "La pizzeria", "2 chemin paquerette", "https://inspyre.club/wp-content/uploads/2021/04/Cabinet-approves-Rs-11000-crore-PLI-scheme-to-promote-food-processing-696x418.jpg", "200m", "Open until 1pm", "1", 2);
-        restaurantList.add(restaurant);
-        Restaurant restaurant2 = new Restaurant(2, "La paella", "2 chemin llll", "https://inspyre.club/wp-content/uploads/2021/04/Cabinet-approves-Rs-11000-crore-PLI-scheme-to-promote-food-processing-696x418.jpg", "100", "Open until 15pm", "2", 0);
-        restaurantList.add(restaurant2);
+        restaurantViewModel.getRestaurants().observe(this, restaurants ->{
+                restaurantsList = restaurants.getRestaurantResults();
+                adapter.updateRestaurants(restaurantsList);
+        });
     }
 
     @Override

@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityMainBinding;
-import com.example.go4lunch.ui.List.RestaurantListFragment;
-import com.example.go4lunch.ui.List.WorkmatesListFragment;
+import com.example.go4lunch.ui.list.RestaurantListFragment;
+import com.example.go4lunch.ui.list.WorkmatesListFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +34,7 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private MapsFragment mapsFragment;
     private ActivityMainBinding binding;
     private FirebaseUser user;
     private FragmentManager fragmentManager;

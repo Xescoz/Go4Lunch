@@ -1,5 +1,7 @@
 package com.example.go4lunch.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Restaurant {
     /**
      * Identifier
@@ -9,22 +11,26 @@ public class Restaurant {
     /**
      * Name of the restaurant
      */
+    @SerializedName("name")
     private String name;
 
     /**
      * Address of the restaurant
      */
+    @SerializedName("vicinity")
     private String address;
 
     /**
      * Image of the restaurant
      */
+    @SerializedName("icon")
     private String image;
 
     /**
-     * Distance from the restaurant
+     * Location of the restaurant
      */
-    private String distance;
+    @SerializedName("location")
+    private String location;
 
     /**
      * Opening time of the restaurant
@@ -46,18 +52,18 @@ public class Restaurant {
         this.name = name;
         this.address = address;
         this.image = image;
-        this.distance = distance;
+        this.location = distance;
         this.openingTime = openingTime;
         this.rating = rating;
         this.numberPersons = numberPersons;
     }
 
-    public String getDistance() {
-        return distance;
+    public String getLocation() {
+        return location;
     }
 
-    public void setDistance(String distance) {
-        this.distance = distance;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public int getNumberPersons() {

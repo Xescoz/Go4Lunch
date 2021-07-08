@@ -47,5 +47,4 @@
     <string name="login">Login</string>
     <string name="workmate_eating">%1$s is eating at %2$s</string>
     <string name="workmate_eating_empty">%1$s hasn\'t decided yet</string>
-
 </resources>
