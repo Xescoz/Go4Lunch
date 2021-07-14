@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import com.example.go4lunch.databinding.FragmentRestaurantListBinding;
 import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.model.RestaurantResults;
+import com.example.go4lunch.ui.BaseFragment;
 import com.example.go4lunch.ui.MapsFragment;
 import com.example.go4lunch.viewmodel.RestaurantViewModel;
 
@@ -29,10 +31,12 @@ import java.util.List;
  * Use the {@link RestaurantListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RestaurantListFragment extends Fragment {
+public class RestaurantListFragment extends BaseFragment {
 
     private RestaurantRecyclerViewAdapter adapter;
+    private static final String TAG = RestaurantListFragment.class.getSimpleName();
     private RestaurantViewModel restaurantViewModel;
+    private String location;
     private FragmentRestaurantListBinding binding;
     private List<Restaurant> restaurantsList = new ArrayList<>();
 
@@ -72,21 +76,22 @@ public class RestaurantListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
-        initList();
+        //restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
+        //initList();
+        location = getLocation();
+        Log.d(TAG, "location = "+location);
     }
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        initList();
+        //initList();
     }
 
     @Override
@@ -115,4 +120,5 @@ public class RestaurantListFragment extends Fragment {
         initRecyclerView();
         adapter.notifyDataSetChanged();
     }
+
 }

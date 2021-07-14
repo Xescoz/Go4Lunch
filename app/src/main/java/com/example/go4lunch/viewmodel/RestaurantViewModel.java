@@ -11,7 +11,7 @@ import com.example.go4lunch.repository.RestaurantRepository;
 import java.util.List;
 
 public class RestaurantViewModel extends ViewModel {
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
     private MutableLiveData<RestaurantResults> mutableLiveData;
     private String location;
 
@@ -26,7 +26,7 @@ public class RestaurantViewModel extends ViewModel {
         return mutableLiveData;
     }
 
-    public void getLocation(String locationSend){
-        location = locationSend;
+    public void setLocation(String location){
+        this.location = location;
     }
 }

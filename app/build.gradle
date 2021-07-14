@@ -25,6 +25,22 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "GOOGLE_MAPS_KEY", "\"AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI\"")
+            resValue ("string", "app_name", "Go4Lunch")
+            resValue ("string", "facebook_application_id", "324684585880045")
+            resValue ("string", "facebook_login_protocol_scheme", "fb324684585880045")
+            resValue ("string", "twitter_consumer_key", "Rx2ShmVaaGpY5PGMhVZX7prdq")
+            resValue ("string", "twitter_consumer_secret", "NX3rmGd00Bjov9gAYCuq0raAzcd73kBrbW82lUEyrqkp95xIVj")
+            resValue ("string", "google_maps_key", "AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI")
+        }
+        debug{
+            buildConfigField("String", "GOOGLE_MAPS_KEY", "\"AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI\"")
+            resValue ("string", "app_name", "Go4Lunch")
+            resValue ("string", "facebook_application_id", "324684585880045")
+            resValue ("string", "facebook_login_protocol_scheme", "fb324684585880045")
+            resValue ("string", "twitter_consumer_key", "Rx2ShmVaaGpY5PGMhVZX7prdq")
+            resValue ("string", "twitter_consumer_secret", "NX3rmGd00Bjov9gAYCuq0raAzcd73kBrbW82lUEyrqkp95xIVj")
+            resValue ("string", "google_maps_key", "AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI")
         }
     }
     compileOptions {

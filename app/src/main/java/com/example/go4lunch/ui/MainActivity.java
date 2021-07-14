@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.example.go4lunch.ui.list.RestaurantListFragment;
@@ -30,6 +31,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         configureNavigationView();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-
 
     }
 
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showMapFragment() {
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_placeholder, new MapsFragment())
+                .replace(R.id.fragment_placeholder, new MapsFragment(),"MapsFragment")
                 .commit();
     }
 

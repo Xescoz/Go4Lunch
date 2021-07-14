@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
+import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.viewmodel.RestaurantViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,10 +27,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends BaseFragment {
 
     private GoogleMap map;
     private static final String TAG = MapsFragment.class.getSimpleName();
@@ -56,6 +60,7 @@ public class MapsFragment extends Fragment {
     private static final String KEY_LOCATION = "location";
 
     private RestaurantViewModel restaurantViewModel;
+    private List<Restaurant> restaurantsList = new ArrayList<>();
 
     private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -78,6 +83,7 @@ public class MapsFragment extends Fragment {
             updateLocationUI();
             // Get the current location of the device and set the position of the map.
             getDeviceLocation();
+
         }
     };
 
@@ -103,8 +109,11 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getContext());
-        restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
+
+        //restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
+
 
     }
 
@@ -116,10 +125,22 @@ public class MapsFragment extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+    private void initList() {
+        restaurantViewModel.getRestaurants().observe(this, restaurants ->{
+            restaurantsList = restaurants.getRestaurantResults();
+            Log.d(TAG, "listSize = "+restaurantsList.size());
+            for(int i = 0; i<restaurantsList.size(); i++ ){
+                Restaurant restaurant = restaurantsList.get(i);
+                Log.d(TAG, "latRestaurant = "+restaurant.getGeometry().getLocation().getLat());
+                Log.d(TAG, "lngRestaurant = "+restaurant.getGeometry().getLocation().getLng());
+                Log.d(TAG, "restaurant = "+restaurant.getName());
+            }
+        });
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
@@ -160,7 +181,11 @@ public class MapsFragment extends Fragment {
                                         new LatLng(lastKnownLocation.getLatitude(),
                                                 lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                                 location = lastKnownLocation.getLatitude()+","+lastKnownLocation.getLongitude();
-                                restaurantViewModel.getLocation(location);
+
+                                setLocation(location);
+
+                                //restaurantViewModel.setLocation(location);
+                                //initList();
                                 Log.d(TAG, "location = "+location);
                             }
                         } else {
@@ -196,4 +221,6 @@ public class MapsFragment extends Fragment {
             Log.e("Exception: %s", e.getMessage());
         }
     }
+
+
 }
