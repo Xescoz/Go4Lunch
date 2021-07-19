@@ -41,7 +41,6 @@ public abstract class BaseFragment extends Fragment {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getContext());
 
         getLocationPermission();
-        //getDeviceLocation();
     }
 
     @Override
@@ -81,7 +80,6 @@ public abstract class BaseFragment extends Fragment {
                             lastKnownLocation = task.getResult();
                             getLocationUser(lastKnownLocation);
                             Log.d(TAG, "LastKnowLocation "+lastKnownLocation);
-                            Log.e(TAG, "Exception: %s", task.getException());
 
                         }
                     }

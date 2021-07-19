@@ -37,7 +37,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MapsFragment extends BaseFragment {
-
+    private Location location;
     private GoogleMap map;
     private static final String TAG = MapsFragment.class.getSimpleName();
     // A default location (Sydney, Australia) and default zoom to use when location permission is
@@ -62,7 +62,11 @@ public class MapsFragment extends BaseFragment {
         @Override
         public void onMapReady(GoogleMap map) {
             MapsFragment.this.map = map;
-            // Turn on the My Location layer and the related control on the map.
+
+            updateLocationUI();
+
+            moveCameraToCurrentPosition(location);
+
         }
     };
 
@@ -83,7 +87,6 @@ public class MapsFragment extends BaseFragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-
         restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
     }
 
@@ -104,12 +107,16 @@ public class MapsFragment extends BaseFragment {
 
     @Override
     public void getLocationUser(Location locationUser) {
-        Log.d(TAG, "LocationUser "+locationUser);
+            location = locationUser;
+            if(map != null)
+                moveCameraToCurrentPosition(locationUser);
+    }
+
+    private void moveCameraToCurrentPosition(Location locationUser){
         if (locationUser != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(locationUser.getLatitude(),
-                            locationUser.getLongitude()), DEFAULT_ZOOM));
-            initList(locationUser);
+            map.animateCamera(CameraUpdateFactory
+                    .newLatLngZoom(new LatLng(locationUser.getLatitude(), locationUser.getLongitude()), 16));
+            initList(location);
         }
         else {
             Log.d(TAG, "Current location is null. Using defaults.");
@@ -119,4 +126,17 @@ public class MapsFragment extends BaseFragment {
         }
 
     }
+
+    private void updateLocationUI() {
+        if (map == null) {
+            return;
+        }
+        try {
+            map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(true);
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
+    }
+
 }

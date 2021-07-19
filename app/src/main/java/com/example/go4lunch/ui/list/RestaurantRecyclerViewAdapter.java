@@ -47,9 +47,6 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         holder.binding.itemRestaurantAddress.setText(restaurant.getAddress());
         //holder.binding.itemRestaurantDistance.setText(restaurant.getLocation());
         holder.binding.itemRestaurantOpenTime.setText(restaurant.getOpeningTime());
-        Glide.with(context)
-                .load(restaurant.getImage())
-                .into(holder.binding.itemRestaurantImage);
         if(restaurant.getNumberPersons() == 0){
             holder.binding.itemRestaurantNumberPerson.setVisibility(View.GONE);
             holder.binding.itemRestaurantNumberPersonImage.setVisibility(View.GONE);
@@ -73,12 +70,13 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         }
 
         String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI";
-/*
-        if(restaurant.getPhotos().getPhotos() != null)
-            url = url+"&photoreference="+restaurant.getPhotos().getPhotos().get(0).getPhotoReference();
+
+        if(restaurant.getPhotos() != null && restaurant.getPhotos().size() > 0)
+            url = url+"&photoreference="+restaurant.getPhotos().get(0).getPhotoReference();
             Glide.with(context)
                     .load(url)
-                    .into(holder.binding.itemRestaurantImage);*/
+                    .error(restaurant.getImage())
+                    .into(holder.binding.itemRestaurantImage);
 
     }
 

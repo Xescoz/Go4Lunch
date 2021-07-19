@@ -2,6 +2,8 @@ package com.example.go4lunch.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Restaurant {
     /**
      * Identifier
@@ -25,7 +27,7 @@ public class Restaurant {
     @SerializedName("icon")
     private String image;
 
-    private Photos photos;
+    private List<Photo> photos;
 
     /**
      * Location of the restaurant
@@ -47,8 +49,7 @@ public class Restaurant {
      */
     private int numberPersons;
 
-    public Restaurant(long id, String name, String address, String image, Geometry geometry,double lat
-                      ,double lng, String openingTime, double rating, int numberPersons,Photos photos) {
+    public Restaurant(long id, String name, String address, String image, Geometry geometry, String openingTime, double rating, int numberPersons,List<Photo> photos) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -60,11 +61,11 @@ public class Restaurant {
         this.photos = photos;
     }
 
-    public Photos getPhotos() {
+    public List<Photo> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(Photos photos) {
+    public void setPhotos(List<Photo> photos) {
         this.photos = photos;
     }
 
