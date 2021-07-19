@@ -24,7 +24,7 @@ public class RestaurantRepository {
     public MutableLiveData<RestaurantResults> requestRestaurants(String location) {
         final MutableLiveData<RestaurantResults> mutableLiveData = new MutableLiveData<>();
         Log.d(TAG, "location repository = "+location);
-        Call<RestaurantResults> call = RetrofitClient.getInstance().getMyApi().getAllRestaurants( BuildConfig.GOOGLE_MAPS_KEY,"restaurant",location,"350");
+        Call<RestaurantResults> call = RetrofitClient.getInstance().getMyApi().getAllRestaurants( BuildConfig.GOOGLE_MAPS_KEY,"restaurant",location,"400");
         call.enqueue(new Callback<RestaurantResults>() {
             @Override
             public void onResponse(Call<RestaurantResults> call, Response<RestaurantResults> response) {

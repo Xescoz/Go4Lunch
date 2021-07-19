@@ -78,6 +78,7 @@ public class RestaurantListFragment extends BaseFragment {
         }
         //restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
         //initList();
+
         location = getLocation();
         Log.d(TAG, "location = "+location);
     }
@@ -86,12 +87,6 @@ public class RestaurantListFragment extends BaseFragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //initList();
     }
 
     @Override

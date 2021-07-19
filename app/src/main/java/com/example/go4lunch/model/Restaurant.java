@@ -30,13 +30,6 @@ public class Restaurant {
      */
     private Geometry geometry;
 
-
-    @SerializedName("lat")
-    private double lat;
-
-    @SerializedName("lng")
-    private double lng;
-
     /**
      * Opening time of the restaurant
      */
@@ -45,7 +38,7 @@ public class Restaurant {
     /**
      * Rating of the restaurant
      */
-    private String rating;
+    private double rating;
 
     /**
      * Number of person in the restaurant
@@ -53,33 +46,15 @@ public class Restaurant {
     private int numberPersons;
 
     public Restaurant(long id, String name, String address, String image, Geometry geometry,double lat
-                      ,double lng, String openingTime, String rating, int numberPersons) {
+                      ,double lng, String openingTime, double rating, int numberPersons) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.image = image;
         this.geometry = geometry;
-        this.lat = lat;
-        this.lng = lng;
         this.openingTime = openingTime;
         this.rating = rating;
         this.numberPersons = numberPersons;
-    }
-
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public void setLng(double lng) {
-        this.lng = lng;
     }
 
     public Geometry getGeometry() {
@@ -138,11 +113,11 @@ public class Restaurant {
         this.openingTime = openingTime;
     }
 
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 }

@@ -2,8 +2,10 @@ package com.example.go4lunch.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +27,15 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                // We use a String here, but any type that can be put in a Bundle is supported
+                location = bundle.getString("bundleKey");
+                Log.d(TAG, "location = "+location);
+            }
+        });
+
     }
 
     @Override
@@ -39,18 +50,9 @@ public abstract class BaseFragment extends Fragment {
         return location;
     }
 
-
+/*
     public void setLocation(String location){
         this.location = location;
-        Log.d(TAG, "location = "+location);
         Log.d(TAG, "location = "+this.location);
-    }
-
-
-
-    /*
-    @Override
-    public void onFindLocation(String location) {
-        this.location = location;
     }*/
 }

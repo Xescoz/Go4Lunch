@@ -57,6 +57,21 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
         else {
             holder.binding.itemRestaurantNumberPerson.setText(context.getString(R.string.number_of_person, restaurant.getNumberPersons()));
         }
+
+        if(restaurant.getRating()<=2 && restaurant.getRating()!= 0)
+            holder.binding.itemRestaurantOneStar.setVisibility(View.VISIBLE);
+
+        else if(restaurant.getRating()>2 && restaurant.getRating()<4) {
+            holder.binding.itemRestaurantOneStar.setVisibility(View.VISIBLE);
+            holder.binding.itemRestaurantTwoStar.setVisibility(View.VISIBLE);
+        }
+
+        else if(restaurant.getRating()>=4) {
+            holder.binding.itemRestaurantOneStar.setVisibility(View.VISIBLE);
+            holder.binding.itemRestaurantTwoStar.setVisibility(View.VISIBLE);
+            holder.binding.itemRestaurantThreeStar.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

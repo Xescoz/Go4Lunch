@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -131,9 +132,11 @@ public class MapsFragment extends BaseFragment {
             Log.d(TAG, "listSize = "+restaurantsList.size());
             for(int i = 0; i<restaurantsList.size(); i++ ){
                 Restaurant restaurant = restaurantsList.get(i);
-                Log.d(TAG, "latRestaurant = "+restaurant.getGeometry().getLocation().getLat());
-                Log.d(TAG, "lngRestaurant = "+restaurant.getGeometry().getLocation().getLng());
-                Log.d(TAG, "restaurant = "+restaurant.getName());
+                Log.d(TAG, "rating = "+restaurant.getRating());
+                LatLng position = new LatLng(restaurant.getGeometry().getLocation().getLat(),restaurant.getGeometry().getLocation().getLng());
+                map.addMarker(new MarkerOptions()
+                .position(position)
+                .title(restaurant.getName()));
             }
         });
     }
@@ -162,7 +165,7 @@ public class MapsFragment extends BaseFragment {
     /**
      * Gets the current location of the device, and positions the map's camera.
      */
-    private void getDeviceLocation() {
+    public void getDeviceLocation() {
         /*
          * Get the best and most recent location of the device, which may be null in rare
          * cases when a location is not available.
@@ -182,7 +185,13 @@ public class MapsFragment extends BaseFragment {
                                                 lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
                                 location = lastKnownLocation.getLatitude()+","+lastKnownLocation.getLongitude();
 
-                                setLocation(location);
+                                Bundle result = new Bundle();
+                                result.putString("bundleKey", location);
+                                // The child fragment needs to still set the result on its parent fragment manager
+                                getParentFragmentManager().setFragmentResult("requestKey", result);
+
+
+                                //setLocation(location);
 
                                 //restaurantViewModel.setLocation(location);
                                 //initList();
@@ -221,6 +230,4 @@ public class MapsFragment extends BaseFragment {
             Log.e("Exception: %s", e.getMessage());
         }
     }
-
-
 }
