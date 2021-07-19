@@ -25,6 +25,8 @@ public class Restaurant {
     @SerializedName("icon")
     private String image;
 
+    private Photos photos;
+
     /**
      * Location of the restaurant
      */
@@ -46,7 +48,7 @@ public class Restaurant {
     private int numberPersons;
 
     public Restaurant(long id, String name, String address, String image, Geometry geometry,double lat
-                      ,double lng, String openingTime, double rating, int numberPersons) {
+                      ,double lng, String openingTime, double rating, int numberPersons,Photos photos) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -55,6 +57,15 @@ public class Restaurant {
         this.openingTime = openingTime;
         this.rating = rating;
         this.numberPersons = numberPersons;
+        this.photos = photos;
+    }
+
+    public Photos getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Photos photos) {
+        this.photos = photos;
     }
 
     public Geometry getGeometry() {

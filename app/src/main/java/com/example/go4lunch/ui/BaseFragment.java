@@ -1,5 +1,8 @@
 package com.example.go4lunch.ui;
 
+import android.Manifest;
+import android.app.Activity;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,46 +16,81 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.go4lunch.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 
 public abstract class BaseFragment extends Fragment {
 
-    private String location;
     private static final String TAG = BaseFragment.class.getSimpleName();
-
-    public BaseFragment() {
-        // Required empty public constructor
-    }
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private boolean locationPermissionGranted;
+    private Location lastKnownLocation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
-            @Override
-            public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                // We use a String here, but any type that can be put in a Bundle is supported
-                location = bundle.getString("bundleKey");
-                Log.d(TAG, "location = "+location);
-            }
-        });
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.getContext());
 
+        getLocationPermission();
+        //getDeviceLocation();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_base, container, false);
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    public String getLocation(){
-        Log.d(TAG, "location = "+location);
-        return location;
+
+    @AfterPermissionGranted(PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+    private void getLocationPermission() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this.getContext(), perms)) {
+            locationPermissionGranted = true;
+            getDeviceLocation();
+            Log.d(TAG, "Permission is true");
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, getString(R.string.camera_and_location_rationale),
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION, perms);
+        }
     }
 
-/*
-    public void setLocation(String location){
-        this.location = location;
-        Log.d(TAG, "location = "+this.location);
-    }*/
+    public void getDeviceLocation() {
+        /*
+         * Get the best and most recent location of the device, which may be null in rare
+         * cases when a location is not available.
+         */
+        try {
+            if (locationPermissionGranted) {
+                Task<Location> locationResult = fusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener((Activity) this.getContext(), new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if (task.isSuccessful()) {
+                            lastKnownLocation = task.getResult();
+                            getLocationUser(lastKnownLocation);
+                            Log.d(TAG, "LastKnowLocation "+lastKnownLocation);
+                            Log.e(TAG, "Exception: %s", task.getException());
+
+                        }
+                    }
+                });
+            }
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage(), e);
+        }
+    }
+
+    public abstract void getLocationUser(Location locationUser);
 }

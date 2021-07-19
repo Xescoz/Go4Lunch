@@ -6,7 +6,7 @@ import java.util.List;
 
 public class RestaurantResults {
     @SerializedName("results")
-    List<Restaurant> restaurantResults;
+    private List<Restaurant> restaurantResults;
 
     public RestaurantResults(List<Restaurant> restaurantResults) {
         this.restaurantResults = restaurantResults;

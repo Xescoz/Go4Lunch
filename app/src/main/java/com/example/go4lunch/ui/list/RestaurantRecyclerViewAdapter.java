@@ -72,6 +72,14 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
             holder.binding.itemRestaurantThreeStar.setVisibility(View.VISIBLE);
         }
 
+        String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI";
+/*
+        if(restaurant.getPhotos().getPhotos() != null)
+            url = url+"&photoreference="+restaurant.getPhotos().getPhotos().get(0).getPhotoReference();
+            Glide.with(context)
+                    .load(url)
+                    .into(holder.binding.itemRestaurantImage);*/
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

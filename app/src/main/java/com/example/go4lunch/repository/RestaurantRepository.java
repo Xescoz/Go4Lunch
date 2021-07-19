@@ -1,5 +1,6 @@
 package com.example.go4lunch.repository;
 
+import android.location.Location;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -21,8 +22,9 @@ import retrofit2.Response;
 public class RestaurantRepository {
     private final String TAG = getClass().getSimpleName();
 
-    public MutableLiveData<RestaurantResults> requestRestaurants(String location) {
+    public MutableLiveData<RestaurantResults> requestRestaurants(Location locationUser) {
         final MutableLiveData<RestaurantResults> mutableLiveData = new MutableLiveData<>();
+        String location = locationUser.getLatitude()+","+locationUser.getLongitude();
         Log.d(TAG, "location repository = "+location);
         Call<RestaurantResults> call = RetrofitClient.getInstance().getMyApi().getAllRestaurants( BuildConfig.GOOGLE_MAPS_KEY,"restaurant",location,"400");
         call.enqueue(new Callback<RestaurantResults>() {

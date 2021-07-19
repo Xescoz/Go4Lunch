@@ -1,5 +1,6 @@
 package com.example.go4lunch.ui.list;
 
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -26,61 +27,26 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RestaurantListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class RestaurantListFragment extends BaseFragment {
 
     private RestaurantRecyclerViewAdapter adapter;
     private static final String TAG = RestaurantListFragment.class.getSimpleName();
     private RestaurantViewModel restaurantViewModel;
-    private String location;
     private FragmentRestaurantListBinding binding;
     private List<Restaurant> restaurantsList = new ArrayList<>();
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
-    public RestaurantListFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RestaurantListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RestaurantListFragment newInstance(String param1, String param2) {
-        RestaurantListFragment fragment = new RestaurantListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        //restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
-        //initList();
+        restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
+    }
 
-        location = getLocation();
-        Log.d(TAG, "location = "+location);
+    @Override
+    public void getLocationUser(Location locationUser) {
+        initList(locationUser);
+        Log.d(TAG, "location = "+locationUser);
     }
 
     @Override
@@ -102,8 +68,8 @@ public class RestaurantListFragment extends BaseFragment {
         binding.restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
-    private void initList() {
-        restaurantViewModel.getRestaurants().observe(this, restaurants ->{
+    private void initList(Location location) {
+        restaurantViewModel.getRestaurants(location).observe(this, restaurants ->{
                 restaurantsList = restaurants.getRestaurantResults();
                 adapter.updateRestaurants(restaurantsList);
         });
