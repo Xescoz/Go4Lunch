@@ -71,7 +71,7 @@ public class RestaurantListFragment extends BaseFragment {
     private void initList(Location location) {
         restaurantViewModel.getRestaurants(location).observe(this, restaurants ->{
                 restaurantsList = restaurants.getRestaurantResults();
-                adapter.updateRestaurants(restaurantsList);
+                adapter.updateRestaurants(restaurantsList, location);
         });
     }
 

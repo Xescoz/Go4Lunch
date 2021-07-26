@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
     private static RetrofitClient instance = null;
     private RestaurantApi myApi;
-    String BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/";
+    String BASE_URL = "https://maps.googleapis.com/maps/api/place/";
 
     private RetrofitClient() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)

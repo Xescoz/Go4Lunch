@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Go4Lunch">
+        <activity android:name=".ui.RestaurantDetail"></activity>
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/title_activity_test"

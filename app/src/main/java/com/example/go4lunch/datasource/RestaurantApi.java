@@ -14,6 +14,6 @@ import retrofit2.http.Query;
 
 public interface RestaurantApi {
 
-    @GET("json")
+    @GET("nearbysearch/json")
     Call<RestaurantResults> getAllRestaurants(@Query("key") String key,@Query("type") String restaurant,@Query("location") String location,  @Query("radius")String radius);
 }

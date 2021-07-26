@@ -36,8 +36,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
-    private MapsFragment mapsFragment;
     private ActivityMainBinding binding;
     private FirebaseUser user;
     private FragmentManager fragmentManager;

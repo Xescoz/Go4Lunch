@@ -21,9 +21,9 @@ import retrofit2.Response;
 
 public class RestaurantRepository {
     private final String TAG = getClass().getSimpleName();
+    private final MutableLiveData<RestaurantResults> mutableLiveData = new MutableLiveData<>();
 
     public MutableLiveData<RestaurantResults> requestRestaurants(Location locationUser) {
-        final MutableLiveData<RestaurantResults> mutableLiveData = new MutableLiveData<>();
         String location = locationUser.getLatitude()+","+locationUser.getLongitude();
         Log.d(TAG, "location repository = "+location);
         Call<RestaurantResults> call = RetrofitClient.getInstance().getMyApi().getAllRestaurants( BuildConfig.GOOGLE_MAPS_KEY,"restaurant",location,"400");
@@ -38,7 +38,8 @@ public class RestaurantRepository {
 
             @Override
             public void onFailure(Call<RestaurantResults> call, Throwable t) {
-                Log.e(TAG, "onFailure :" + call);
+                Log.e(TAG, "onFailure :" +t.getMessage());
+                mutableLiveData.setValue(null);
                 t.printStackTrace();
             }
 

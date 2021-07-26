@@ -8,7 +8,7 @@ public class Restaurant {
     /**
      * Identifier
      */
-    private long id;
+    private String place_id;
 
     /**
      * Name of the restaurant
@@ -49,8 +49,8 @@ public class Restaurant {
      */
     private int numberPersons;
 
-    public Restaurant(long id, String name, String address, String image, Geometry geometry, String openingTime, double rating, int numberPersons,List<Photo> photos) {
-        this.id = id;
+    public Restaurant(String place_id, String name, String address, String image, Geometry geometry, String openingTime, double rating, int numberPersons,List<Photo> photos) {
+        this.place_id = place_id;
         this.name = name;
         this.address = address;
         this.image = image;
@@ -85,12 +85,12 @@ public class Restaurant {
         this.numberPersons = numberPersons;
     }
 
-    public long getId() {
-        return id;
+    public String getId() {
+        return place_id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(String id) {
+        this.place_id = id;
     }
 
     public String getName() {

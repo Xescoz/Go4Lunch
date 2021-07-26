@@ -1,6 +1,8 @@
 package com.example.go4lunch.ui.list;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ItemRestaurantBinding;
 import com.example.go4lunch.model.Restaurant;
@@ -19,10 +22,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RestaurantRecyclerViewAdapter.ViewHolder> {
+public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<RestaurantViewHolder> {
 
     private final Context context;
     private List<Restaurant> restaurantList;
+    private Location location;
 
     public RestaurantRecyclerViewAdapter(Context context, List<Restaurant> restaurantList){
         this.restaurantList = restaurantList;
@@ -31,62 +35,20 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
     @NonNull
     @NotNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return new ViewHolder(ItemRestaurantBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false));
+    public RestaurantViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        return new RestaurantViewHolder(ItemRestaurantBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false));
     }
 
-    public void updateRestaurants(List<Restaurant> restaurants){
+    public void updateRestaurants(List<Restaurant> restaurants, Location location){
         this.restaurantList = restaurants;
+        this.location = location;
         notifyDataSetChanged();
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull RestaurantViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
-        holder.binding.itemRestaurantTitle.setText(restaurant.getName());
-        holder.binding.itemRestaurantAddress.setText(restaurant.getAddress());
-        //holder.binding.itemRestaurantDistance.setText(restaurant.getLocation());
-        holder.binding.itemRestaurantOpenTime.setText(restaurant.getOpeningTime());
-        if(restaurant.getNumberPersons() == 0){
-            holder.binding.itemRestaurantNumberPerson.setVisibility(View.GONE);
-            holder.binding.itemRestaurantNumberPersonImage.setVisibility(View.GONE);
-        }
-        else {
-            holder.binding.itemRestaurantNumberPerson.setText(context.getString(R.string.number_of_person, restaurant.getNumberPersons()));
-        }
-
-        if(restaurant.getRating()<=2 && restaurant.getRating()!= 0)
-            holder.binding.itemRestaurantOneStar.setVisibility(View.VISIBLE);
-
-        else if(restaurant.getRating()>2 && restaurant.getRating()<4) {
-            holder.binding.itemRestaurantOneStar.setVisibility(View.VISIBLE);
-            holder.binding.itemRestaurantTwoStar.setVisibility(View.VISIBLE);
-        }
-
-        else if(restaurant.getRating()>=4) {
-            holder.binding.itemRestaurantOneStar.setVisibility(View.VISIBLE);
-            holder.binding.itemRestaurantTwoStar.setVisibility(View.VISIBLE);
-            holder.binding.itemRestaurantThreeStar.setVisibility(View.VISIBLE);
-        }
-
-        String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=AIzaSyCF7g6wLw9qp_v_7KSUrbXkJpwZw564ggI";
-
-        if(restaurant.getPhotos() != null && restaurant.getPhotos().size() > 0)
-            url = url+"&photoreference="+restaurant.getPhotos().get(0).getPhotoReference();
-            Glide.with(context)
-                    .load(url)
-                    .error(restaurant.getImage())
-                    .into(holder.binding.itemRestaurantImage);
-
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        private final ItemRestaurantBinding binding;
-
-        public ViewHolder(ItemRestaurantBinding binding){
-            super(binding.getRoot());
-            this.binding = binding;
-        }
+        holder.bind(restaurant,location,context);
     }
 
     @Override
