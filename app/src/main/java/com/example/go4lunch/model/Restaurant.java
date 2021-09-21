@@ -8,7 +8,8 @@ public class Restaurant {
     /**
      * Identifier
      */
-    private String place_id;
+    @SerializedName("place_id")
+    private String placeId;
 
     /**
      * Name of the restaurant
@@ -20,6 +21,17 @@ public class Restaurant {
      */
     @SerializedName("vicinity")
     private String address;
+
+    /**
+     * Phone number of the restaurant
+     */
+    @SerializedName("formatted_phone_number")
+    private String phoneNumber;
+
+    /**
+     * Website url of the restaurant
+     */
+    private String website;
 
     /**
      * Image of the restaurant
@@ -37,20 +49,24 @@ public class Restaurant {
     /**
      * Opening time of the restaurant
      */
-    private String openingTime;
+    @SerializedName("opening_hours")
+    private OpenNow openingTime;
 
     /**
      * Rating of the restaurant
      */
-    private double rating;
+    private float rating;
 
     /**
      * Number of person in the restaurant
      */
     private int numberPersons;
 
-    public Restaurant(String place_id, String name, String address, String image, Geometry geometry, String openingTime, double rating, int numberPersons,List<Photo> photos) {
-        this.place_id = place_id;
+    public Restaurant() {
+    }
+
+    public Restaurant(String place_id, String name, String address, String image, Geometry geometry, OpenNow openingTime, float rating, int numberPersons, List<Photo> photos, String phoneNumber, String website) {
+        this.placeId = place_id;
         this.name = name;
         this.address = address;
         this.image = image;
@@ -59,6 +75,24 @@ public class Restaurant {
         this.rating = rating;
         this.numberPersons = numberPersons;
         this.photos = photos;
+        this.phoneNumber = phoneNumber;
+        this.website = website;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public List<Photo> getPhotos() {
@@ -85,12 +119,12 @@ public class Restaurant {
         this.numberPersons = numberPersons;
     }
 
-    public String getId() {
-        return place_id;
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public void setId(String id) {
-        this.place_id = id;
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     public String getName() {
@@ -117,19 +151,19 @@ public class Restaurant {
         this.image = image;
     }
 
-    public String getOpeningTime() {
+    public OpenNow getOpeningTime() {
         return openingTime;
     }
 
-    public void setOpeningTime(String openingTime) {
+    public void setOpeningTime(OpenNow openingTime) {
         this.openingTime = openingTime;
     }
 
-    public double getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 }

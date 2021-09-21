@@ -1,5 +1,6 @@
 package com.example.go4lunch.ui.list;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class WorkmateRecyclerViewAdapter extends RecyclerView.Adapter<WorkmateRecyclerViewAdapter.ViewHolder> {
+public class WorkmateRecyclerViewAdapter extends RecyclerView.Adapter<WorkmateViewHolder> {
 
     private final Context context;
     private final List<Workmate> workmateList;
@@ -30,35 +31,15 @@ public class WorkmateRecyclerViewAdapter extends RecyclerView.Adapter<WorkmateRe
     @NonNull
     @NotNull
     @Override
-    public WorkmateRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        return new WorkmateRecyclerViewAdapter.ViewHolder(ItemWorkmateBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+    public WorkmateViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        return new WorkmateViewHolder(ItemWorkmateBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull WorkmateRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull WorkmateViewHolder holder, int position) {
         Workmate workmate = workmateList.get(position);
-
-        Glide.with(context)
-                .load(workmate.getPicture())
-                .apply(RequestOptions.circleCropTransform())
-                .placeholder(R.drawable.ic_baseline_account_circle_black)
-                .into(holder.binding.itemWorkmateImage);
-
-        if (workmate.getRestaurant().isEmpty()) {
-            holder.binding.itemWorkmateEatingText.setText(context.getString(R.string.workmate_eating_empty, workmate.getName()));
-            holder.binding.itemWorkmateEatingText.setTextColor(context.getResources().getColor(R.color.light_grey));
-        } else
-            holder.binding.itemWorkmateEatingText.setText(context.getString(R.string.workmate_eating, workmate.getName(), workmate.getRestaurant()));
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private final ItemWorkmateBinding binding;
-
-        public ViewHolder(ItemWorkmateBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
+        holder.bindWorkmate(workmate,context);
     }
 
     @Override

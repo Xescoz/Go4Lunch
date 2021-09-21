@@ -1,10 +1,10 @@
 package com.example.go4lunch.model;
 
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
+
 public class Workmate {
-    /**
-     * Identifier
-     */
-    private long id;
 
     /**
      * Name of the workmate
@@ -14,26 +14,62 @@ public class Workmate {
     /**
      * Restaurant chosen by the workmate
      */
-    private String restaurant;
+    private String currentRestaurant;
+
+    /**
+     * Name of the restaurant chosen by the workmate
+     */
+    private String currentRestaurantName;
 
     /**
      * Profile picture of the workmate
      */
     private String picture;
 
-    public Workmate(long id, String name, String restaurant, String picture) {
-        this.id = id;
+    /**
+     * Restaurants likes of the workmate
+     */
+    private List<String> likes;
+
+    /**
+     * Boolean to know if the notification is on for the workmate
+     */
+    private Boolean notification;
+
+    public Workmate() {
+    }
+
+    public Workmate(String name, String currentRestaurant, String picture, String currentRestaurantName, List<String> likes, Boolean notification) {
         this.name = name;
-        this.restaurant = restaurant;
+        this.currentRestaurant = currentRestaurant;
         this.picture = picture;
+        this.currentRestaurantName = currentRestaurantName;
+        this.likes = likes;
+        this.notification = notification;
     }
 
-    public long getId() {
-        return id;
+    public Boolean getNotification() {
+        return notification;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setNotification(Boolean notification) {
+        this.notification = notification;
+    }
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
+    }
+
+    public String getCurrentRestaurantName() {
+        return currentRestaurantName;
+    }
+
+    public void setCurrentRestaurantName(String currentRestaurantName) {
+        this.currentRestaurantName = currentRestaurantName;
     }
 
     public String getName() {
@@ -44,12 +80,12 @@ public class Workmate {
         this.name = name;
     }
 
-    public String getRestaurant() {
-        return restaurant;
+    public String getCurrentRestaurant() {
+        return currentRestaurant;
     }
 
-    public void setRestaurant(String restaurant) {
-        this.restaurant = restaurant;
+    public void setCurrentRestaurant(String currentRestaurant) {
+        this.currentRestaurant = currentRestaurant;
     }
 
     public String getPicture() {

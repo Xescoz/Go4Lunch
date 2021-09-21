@@ -19,11 +19,14 @@ import android.view.ViewGroup;
 import com.example.go4lunch.databinding.FragmentRestaurantListBinding;
 import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.model.RestaurantResults;
+import com.example.go4lunch.model.Workmate;
 import com.example.go4lunch.ui.BaseFragment;
 import com.example.go4lunch.ui.MapsFragment;
 import com.example.go4lunch.viewmodel.RestaurantViewModel;
+import com.example.go4lunch.viewmodel.WorkmateViewModel;
 
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,53 +36,61 @@ public class RestaurantListFragment extends BaseFragment {
     private RestaurantRecyclerViewAdapter adapter;
     private static final String TAG = RestaurantListFragment.class.getSimpleName();
     private RestaurantViewModel restaurantViewModel;
+    private WorkmateViewModel workmateViewModel;
     private FragmentRestaurantListBinding binding;
     private List<Restaurant> restaurantsList = new ArrayList<>();
-
+    private Location location;
+    private String searchPlaceId;
+    private List<Workmate> workmateList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         restaurantViewModel = new ViewModelProvider(requireActivity()).get(RestaurantViewModel.class);
+        workmateViewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
+
     }
 
     @Override
     public void getLocationUser(Location locationUser) {
-        initList(locationUser);
-        Log.d(TAG, "location = "+locationUser);
+        Log.i(TAG, "null: " + searchPlaceId);
+            initList(locationUser);
     }
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initRecyclerView();
+        initWorkmate();
     }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(TAG, "null: " + getArguments());
+        if (getArguments() != null)
+            searchPlaceId = getArguments().getString("place_id");
+
         binding = FragmentRestaurantListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     private void initRecyclerView() {
-        adapter = new RestaurantRecyclerViewAdapter(this.getContext(),restaurantsList);
+        adapter = new RestaurantRecyclerViewAdapter(this.getActivity(), restaurantsList, workmateList, location);
         binding.restaurantRecyclerView.setAdapter(adapter);
         binding.restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
     private void initList(Location location) {
-        restaurantViewModel.getRestaurants(location).observe(this, restaurants ->{
-                restaurantsList = restaurants.getRestaurantResults();
-                adapter.updateRestaurants(restaurantsList, location);
+        restaurantViewModel.getRestaurants(location).observe(this, restaurants -> {
+            restaurantsList = restaurants.getRestaurantResults();
+            this.location = location;
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initRecyclerView();
-        adapter.notifyDataSetChanged();
+    private void initWorkmate(){
+        workmateViewModel.getAllUserFromDB(false).observe(getViewLifecycleOwner(), workmateList -> {
+            this.workmateList = workmateList;
+            initRecyclerView();
+        });
     }
-
 }

@@ -7,6 +7,8 @@ public class Photo {
     @SerializedName("photo_reference")
     private String photoReference;
 
+    public Photo(){}
+
     public Photo(String photoReference) {
         this.photoReference = photoReference;
     }

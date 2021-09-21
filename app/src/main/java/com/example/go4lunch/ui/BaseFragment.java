@@ -79,7 +79,7 @@ public abstract class BaseFragment extends Fragment {
                         if (task.isSuccessful()) {
                             lastKnownLocation = task.getResult();
                             getLocationUser(lastKnownLocation);
-                            Log.d(TAG, "LastKnowLocation "+lastKnownLocation);
+                            Log.d(TAG, "LastKnowLocation " + lastKnownLocation);
 
                         }
                     }

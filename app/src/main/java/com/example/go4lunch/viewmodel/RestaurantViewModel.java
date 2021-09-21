@@ -8,22 +8,30 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.model.RestaurantResults;
-import com.example.go4lunch.repository.RestaurantRepository;
-
-import java.util.List;
+import com.example.go4lunch.model.Result;
+import com.example.go4lunch.repository.RestaurantDetailRepository;
+import com.example.go4lunch.repository.RestaurantsRepository;
 
 public class RestaurantViewModel extends ViewModel {
-    private final RestaurantRepository restaurantRepository;
-    private MutableLiveData<RestaurantResults> mutableLiveData;
+    private final RestaurantsRepository restaurantRepository;
+    private final RestaurantDetailRepository restaurantDetailRepository;
+    private MutableLiveData<RestaurantResults> mutableLiveDataRestaurantResults;
+    private MutableLiveData<Restaurant> mutableLiveDataRestaurantDetail;
 
-    public RestaurantViewModel(){
-        restaurantRepository = new RestaurantRepository();
+    public RestaurantViewModel() {
+        restaurantRepository = new RestaurantsRepository();
+        restaurantDetailRepository = new RestaurantDetailRepository();
     }
 
-    public LiveData<RestaurantResults> getRestaurants(Location location){
-        if(mutableLiveData==null){
-            mutableLiveData = restaurantRepository.requestRestaurants(location);
-        }
-        return mutableLiveData;
+    public LiveData<RestaurantResults> getRestaurants(Location location) {
+        mutableLiveDataRestaurantResults = restaurantRepository.requestRestaurants(location);
+
+        return mutableLiveDataRestaurantResults;
+    }
+
+    public LiveData<Restaurant> getRestaurantDetail(String placeId) {
+        mutableLiveDataRestaurantDetail = restaurantDetailRepository.requestRestaurantDetails(placeId);
+
+        return mutableLiveDataRestaurantDetail;
     }
 }

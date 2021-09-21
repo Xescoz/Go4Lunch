@@ -1,10 +1,18 @@
 package com.example.go4lunch.ui;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,31 +22,55 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.go4lunch.BuildConfig;
 import com.example.go4lunch.R;
 import com.example.go4lunch.databinding.ActivityMainBinding;
+import com.example.go4lunch.model.Workmate;
 import com.example.go4lunch.ui.list.RestaurantListFragment;
 import com.example.go4lunch.ui.list.WorkmatesListFragment;
+import com.example.go4lunch.viewmodel.WorkmateViewModel;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     private ActivityMainBinding binding;
     private FirebaseUser user;
     private FragmentManager fragmentManager;
+    private String fragmentSelected;
+    private final MapsFragment mapsFragment = new MapsFragment();
+    private final RestaurantListFragment restaurantListFragment = new RestaurantListFragment();
+    private final WorkmatesListFragment workmatesListFragment = new WorkmatesListFragment();
+    private Workmate workmate;
+    private WorkmateViewModel workmateViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +82,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBar.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        fragmentManager = getSupportFragmentManager();
+        workmateViewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
 
-        showMapFragment();
+        fragmentManager = getSupportFragmentManager();
+        fragmentSelected = "mapsFragment";
+        showFragment(mapsFragment);
+
+        initAutoComplete();
 
         configureBottomView();
         configureNavigationView();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        initDB();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -68,10 +106,49 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 binding.drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-
+                break;
+            case R.id.menu_search:
+                if(!fragmentSelected.equals("workmatesListFragment")){
+                binding.appBar.autocompleteFragment.setVisibility(View.VISIBLE);
+                binding.appBar.toolbar.setVisibility(View.GONE);
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initAutoComplete() {
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), BuildConfig.GOOGLE_MAPS_KEY, Locale.FRANCE);
+        }
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        assert autocompleteFragment != null;
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG,Place.Field.TYPES));
+        autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
+        autocompleteFragment.setCountry("FR");
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                for (Place.Type type : place.getTypes()) {
+                    if (type == Place.Type.RESTAURANT) {
+                        autoCompleteSuccess(place);
+                        Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+                    }
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
     }
 
     @Override
@@ -102,13 +179,19 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.map_action:
-                        showMapFragment();
+                        showToolBar();
+                        showFragment(mapsFragment);
+                        fragmentSelected = "mapsFragment";
                         break;
                     case R.id.list_action:
-                        showRestaurantListFragment();
+                        showToolBar();
+                        showFragment(restaurantListFragment);
+                        fragmentSelected = "restaurantListFragment";
                         break;
                     case R.id.workmates_action:
-                        showWorkmatesListFragment();
+                        showToolBar();
+                        showFragment(workmatesListFragment);
+                        fragmentSelected = "workmatesListFragment";
                         break;
                 }
                 return true;
@@ -123,10 +206,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_lunch:
-                        Toast.makeText(MainActivity.this, "It's lunch time!", Toast.LENGTH_SHORT).show();
+                        showDetailActivity();
                         break;
                     case R.id.menu_settings:
-                        Toast.makeText(MainActivity.this, "Settings", Toast.LENGTH_SHORT).show();
+                        openSettings();
                         break;
                     case R.id.menu_logout:
                         signOut();
@@ -135,6 +218,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void openSettings(){
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void signOut() {
@@ -149,21 +237,68 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void showMapFragment() {
+
+    private void showDetailActivity() {
+        if (workmate.getCurrentRestaurant() != null) {
+            Intent intent = new Intent(this, RestaurantDetailActivity.class);
+            intent.putExtra("place_id", workmate.getCurrentRestaurant());
+            this.startActivity(intent);
+        }
+        else
+            Toast.makeText(MainActivity.this, R.string.no_restaurant_selected, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showFragment(Fragment fragment) {
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_placeholder, new MapsFragment(),"MapsFragment")
+                .replace(R.id.fragment_placeholder, fragment)
                 .commit();
     }
 
-    private void showRestaurantListFragment() {
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_placeholder, new RestaurantListFragment())
-                .commit();
+    private void showToolBar() {
+        binding.appBar.autocompleteFragment.setVisibility(View.GONE);
+        binding.appBar.toolbar.setVisibility(View.VISIBLE);
     }
 
-    private void showWorkmatesListFragment() {
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_placeholder, new WorkmatesListFragment())
-                .commit();
+    private void autoCompleteSuccess(Place place) {
+        switch (fragmentSelected) {
+            case "mapsFragment":
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("position", place.getLatLng());
+                bundle.putString("name", place.getName());
+                MapsFragment mapsFragmentWithArgument = new MapsFragment();
+                mapsFragmentWithArgument.setArguments(bundle);
+                showFragment(mapsFragmentWithArgument);
+                break;
+            case "restaurantListFragment":
+                Intent intent = new Intent(MainActivity.this, RestaurantDetailActivity.class);
+                intent.putExtra("place_id", place.getId());
+                MainActivity.this.startActivity(intent);
+                break;
+            case "workmatesListFragment":
+                break;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initDB();
+    }
+
+    private void initDB(){
+        workmateViewModel.getCurrentUserFromDB().observe(this, workmate -> {
+            this.workmate = workmate;
+            if(workmate == null)
+                workmateViewModel.writeNewUser(getPhoto());
+            else
+                workmateViewModel.updateUserDB(getPhoto());
+        });
+    }
+    private String getPhoto(){
+        String photo = "";
+        if (user.getPhotoUrl() != null)
+            photo = user.getPhotoUrl().toString();
+
+        return photo;
     }
 }

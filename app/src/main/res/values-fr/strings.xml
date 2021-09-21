@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_in_with_twitter">Connexion avec Twitter</string>
+    <string name="sign_in_with_email">Connexion avec Email</string>
+    <string name="description_logo">Trouver un restaurant et invitez-les a déjeuner!</string>
+    <string name="sign_in_with_facebook">Connexion avec Facebook</string>
+    <string name="sign_in_with_google">Connexion avec Google</string>
+    <string name="camera_and_location_rationale">Demander la permission de position</string>
+    <string name="map_view">Vue carte</string>
+    <string name="list_view">Vue liste</string>
+    <string name="workmates">Vue collègues</string>
+    <string name="hungry">J\'ai faim!</string>
+    <string name="search">Chercher</string>
+    <string name="logout">Déconnexion</string>
+    <string name="settings">Paramètres</string>
+    <string name="your_lunch">Votre déjeuner</string>
+    <string name="login">Connexion</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="workmate_eating">%1$s mange à %2$s</string>
+    <string name="workmate_joining">%1$s rejoint!</string>
+    <string name="workmate_eating_empty">%1$s n\'a pas encore décider</string>
+    <string name="call">APPELER</string>
+    <string name="like">AIME</string>
+    <string name="website">SITE</string>
+    <string name="back">Retour</string>
+    <string name="no_restaurant_selected">Aucune restaurant sélectionner pour déjeuner.</string>
+    <string name="no_one_eating">Personne ne mange ici.</string>
+    <string name="will_eat_here">mangera ici.</string>
+    <string name="open">Ouvert</string>
+    <string name="close">Fermer</string>
+</resources>

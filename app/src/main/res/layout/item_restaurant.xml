@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_restaurant_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,7 +12,6 @@
         android:layout_height="70dp"
         android:layout_marginTop="@dimen/fab_margin"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginRight="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
         android:scaleType="fitXY"
         android:src="@drawable/restaurant_image"
@@ -24,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="@dimen/fab_margin"
         android:text="@string/restaurant_title"
         android:textColor="@color/black"
@@ -37,7 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="@dimen/text_margin"
         android:text="@string/restaurant_address"
         android:textColor="@color/grey"
@@ -51,7 +49,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/fab_margin"
-        android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="@dimen/text_margin"
         android:text="@string/restaurant_opening_time"
         android:textColor="@color/grey"
@@ -66,7 +63,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fab_margin"
         android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
         android:text="@string/distance"
         android:textColor="@color/light_grey"
         android:textSize="14sp"
@@ -79,57 +75,30 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/text_margin"
         android:layout_marginEnd="@dimen/text_margin"
-        android:layout_marginRight="@dimen/text_margin"
         android:text="@string/_1"
         android:textColor="@color/black"
+        android:gravity="center"
         android:textSize="11sp"
+        android:drawableTint="@color/black"
+        android:drawableStart="@drawable/person_outline_vector"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance"
         tools:ignore="SmallSp" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/item_restaurant_number_person_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:src="@drawable/person_outline_vector"
-        android:tint="@color/black"
-        app:layout_constraintEnd_toStartOf="@id/item_restaurant_number_person"
-        app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/item_restaurant_one_star"
-        android:visibility="gone"
+    <RatingBar
+        android:id="@+id/item_restaurant_rating_bar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/text_margin"
-        android:layout_marginRight="@dimen/text_margin"
         android:layout_marginBottom="@dimen/text_margin"
-        android:src="@drawable/star_vector"
+        android:isIndicator="true"
+        android:numStars="3"
+        android:progressTint="@color/yellow"
+        android:secondaryProgressTint="@color/yellow"
+        android:stepSize="0.1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_image"
-        app:layout_constraintTop_toBottomOf="@id/item_restaurant_number_person" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:visibility="gone"
-        android:id="@+id/item_restaurant_two_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/text_margin"
-        android:src="@drawable/star_vector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/item_restaurant_one_star"
-        app:layout_constraintTop_toBottomOf="@id/item_restaurant_number_person" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:visibility="gone"
-        android:id="@+id/item_restaurant_three_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/text_margin"
-        android:src="@drawable/star_vector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/item_restaurant_two_star"
         app:layout_constraintTop_toBottomOf="@id/item_restaurant_number_person" />
 
     <LinearLayout
