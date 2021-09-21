@@ -286,10 +286,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDB(){
-        workmateViewModel.getCurrentUserFromDB().observe(this, workmate -> {
+        workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
             this.workmate = workmate;
-            if(workmate == null)
-                workmateViewModel.writeNewUser(getPhoto());
+            if(workmate == null){
+                Workmate workmateToCreate = new Workmate(user.getDisplayName(), null, getPhoto(), null, null,false);
+                workmateViewModel.writeNewUser(workmateToCreate,user.getUid());
+            }
             else
                 workmateViewModel.updateUserDB(getPhoto());
         });

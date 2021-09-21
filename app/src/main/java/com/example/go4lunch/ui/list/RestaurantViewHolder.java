@@ -16,6 +16,7 @@ import com.example.go4lunch.model.OpenNow;
 import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.model.Workmate;
 import com.example.go4lunch.ui.RestaurantDetailActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
     }
 
     @SuppressLint("SetTextI18n")
-    public void bindRestaurant(Restaurant restaurant, List<Workmate> workmateList, Location location, Activity activity) {
+    public void bindRestaurant(Restaurant restaurant, List<Workmate> workmateList, LatLng location, Activity activity) {
         binding.itemRestaurantTitle.setText(restaurant.getName());
         binding.itemRestaurantAddress.setText(restaurant.getAddress());
 
@@ -45,13 +46,17 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
             binding.itemRestaurantOpenTime.setTextColor(activity.getResources().getColor(R.color.red));
         }
 
+        Location locationUser = new Location("location");
+        locationUser.setLatitude(location.latitude);
+        locationUser.setLongitude(location.longitude);
+
 
         Location restaurantLocation = new Location("restaurantLocation");
         restaurantLocation.setLatitude(restaurant.getGeometry().getLocation().getLat());
         restaurantLocation.setLongitude(restaurant.getGeometry().getLocation().getLng());
 
         if (location != null)
-            binding.itemRestaurantDistance.setText(Math.round(location.distanceTo(restaurantLocation)) + " m");
+            binding.itemRestaurantDistance.setText(Math.round(locationUser.distanceTo(restaurantLocation)) + " m");
 
 
         if (numberOfPerson(workmateList,restaurant) == 0) {
@@ -100,4 +105,3 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
     }
 
 }
-

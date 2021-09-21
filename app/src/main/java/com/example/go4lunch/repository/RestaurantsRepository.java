@@ -12,6 +12,7 @@ import com.example.go4lunch.datasource.RetrofitClient;
 import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.model.RestaurantResults;
 import com.example.go4lunch.ui.MapsFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class RestaurantsRepository {
     private final String TAG = getClass().getSimpleName();
     private final MutableLiveData<RestaurantResults> mutableLiveData = new MutableLiveData<>();
 
-    public MutableLiveData<RestaurantResults> requestRestaurants(Location locationUser) {
-        String location = locationUser.getLatitude() + "," + locationUser.getLongitude();
+    public MutableLiveData<RestaurantResults> requestRestaurants(LatLng locationUser) {
+        String location = locationUser.latitude + "," + locationUser.longitude;
         Log.d(TAG, "location repository = " + location);
         Call<RestaurantResults> call = RetrofitClient.getInstance().getMyApi().getAllRestaurants(BuildConfig.GOOGLE_MAPS_KEY, "restaurant", location, "400");
         call.enqueue(new Callback<RestaurantResults>() {

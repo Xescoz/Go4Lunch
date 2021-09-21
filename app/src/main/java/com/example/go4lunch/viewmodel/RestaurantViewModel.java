@@ -11,6 +11,7 @@ import com.example.go4lunch.model.RestaurantResults;
 import com.example.go4lunch.model.Result;
 import com.example.go4lunch.repository.RestaurantDetailRepository;
 import com.example.go4lunch.repository.RestaurantsRepository;
+import com.google.android.gms.maps.model.LatLng;
 
 public class RestaurantViewModel extends ViewModel {
     private final RestaurantsRepository restaurantRepository;
@@ -23,7 +24,13 @@ public class RestaurantViewModel extends ViewModel {
         restaurantDetailRepository = new RestaurantDetailRepository();
     }
 
-    public LiveData<RestaurantResults> getRestaurants(Location location) {
+    public RestaurantViewModel(RestaurantsRepository restaurantsRepository,RestaurantDetailRepository restaurantDetailRepository) {
+        this.restaurantRepository = restaurantsRepository;
+        this.restaurantDetailRepository = restaurantDetailRepository;
+    }
+
+
+    public LiveData<RestaurantResults> getRestaurants(LatLng location) {
         mutableLiveDataRestaurantResults = restaurantRepository.requestRestaurants(location);
 
         return mutableLiveDataRestaurantResults;

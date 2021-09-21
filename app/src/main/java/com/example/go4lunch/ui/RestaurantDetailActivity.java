@@ -20,6 +20,8 @@ import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.model.Workmate;
 import com.example.go4lunch.viewmodel.RestaurantViewModel;
 import com.example.go4lunch.viewmodel.WorkmateViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private Workmate workmate;
     private List<Workmate> workmateList = new ArrayList<>();
     private RestaurantDetailRecyclerViewAdapter adapter;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         workmateViewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         initDB();
         initWorkmates();
@@ -116,7 +120,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void initDB(){
-        workmateViewModel.getCurrentUserFromDB().observe(this, workmate -> {
+        workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
             this.workmate = workmate;
             initListener();
         });
@@ -126,7 +130,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void updateWorkmate(){
         workmateViewModel.mutableLiveDataCurrentRestaurantIsUpdated.observe(this, isUpdated ->{
             if(isUpdated)
-                workmateViewModel.getCurrentUserFromDB().observe(this, workmate -> {
+                workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
                     this.workmate = workmate;
                 });
         });
@@ -135,7 +139,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void updateLikes(){
         workmateViewModel.mutableLiveDataLikesIsUpdated.observe(this, isUpdated ->{
             if(isUpdated)
-                workmateViewModel.getCurrentUserFromDB().observe(this, workmate -> {
+                workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
                     this.workmate = workmate;
                 });
         });

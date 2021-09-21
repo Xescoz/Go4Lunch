@@ -33,7 +33,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
     private LatLng searchPlacePosition;
     private String searchPlaceName;
 
-    private Location location;
+    private LatLng location;
     private GoogleMap map;
     private static final String TAG = MapsFragment.class.getSimpleName();
     // A default location (Sydney, Australia) and default zoom to use when location permission is
@@ -101,7 +101,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
         workmateViewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
     }
 
-    private void initRestaurantList(Location location) {
+    private void initRestaurantList(LatLng location) {
         initWorkmateList();
         restaurantViewModel.getRestaurants(location).observe(this, restaurants -> {
             restaurantsList = restaurants.getRestaurantResults();
@@ -165,16 +165,16 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
     }
 
     @Override
-    public void getLocationUser(Location locationUser) {
+    public void getLocationUser(LatLng locationUser) {
             location = locationUser;
             if(map != null)
                 moveCameraToCurrentPosition(locationUser);
     }
 
-    private void moveCameraToCurrentPosition(Location locationUser){
+    private void moveCameraToCurrentPosition(LatLng locationUser){
         if (locationUser != null) {
             map.animateCamera(CameraUpdateFactory
-                    .newLatLngZoom(new LatLng(locationUser.getLatitude(), locationUser.getLongitude()), DEFAULT_ZOOM));
+                    .newLatLngZoom(locationUser, DEFAULT_ZOOM));
             initRestaurantList(location);
         }
         else {

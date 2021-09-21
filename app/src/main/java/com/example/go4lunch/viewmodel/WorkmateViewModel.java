@@ -20,15 +20,18 @@ public class WorkmateViewModel extends ViewModel {
     public WorkmateViewModel() {
         workmateRepository = new WorkmateRepository();
     }
+    public WorkmateViewModel(WorkmateRepository workmateRepository){
+        this.workmateRepository = workmateRepository;
+    }
 
-    public LiveData<Workmate> getCurrentUserFromDB(){
-        mutableLiveDataWorkmate = workmateRepository.getCurrentUserFromDB();
+    public LiveData<Workmate> getCurrentUserFromDB(String uid){
+        mutableLiveDataWorkmate = workmateRepository.getCurrentUserFromDB(uid);
 
         return mutableLiveDataWorkmate;
     }
 
-    public void writeNewUser(String pictureUrl){
-        workmateRepository.writeNewUser(pictureUrl);
+    public void writeNewUser(Workmate workmate,String uid){
+        workmateRepository.writeNewUser(workmate,uid);
     }
 
     public void updateUserDB(String pictureUrl){

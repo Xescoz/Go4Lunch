@@ -19,6 +19,8 @@ import com.example.go4lunch.databinding.ActivityMainBinding;
 import com.example.go4lunch.databinding.ActivitySettingsBinding;
 import com.example.go4lunch.model.Workmate;
 import com.example.go4lunch.viewmodel.WorkmateViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Calendar;
 
@@ -29,6 +31,8 @@ public class SettingsActivity extends AppCompatActivity {
     private Workmate workmate;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
+    private FirebaseUser user;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         workmateViewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         initDB();
 
@@ -73,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initDB(){
-        workmateViewModel.getCurrentUserFromDB().observe(this, workmate -> {
+        workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
             this.workmate = workmate;
             if(workmate.getNotification())
                 binding.notificationSwitchButton.setChecked(true);

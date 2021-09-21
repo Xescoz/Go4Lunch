@@ -31,13 +31,12 @@ public class WorkmateRepository {
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private final DocumentReference docRefCurrentUser = db.collection("workmates").document(user.getUid());
 
-    public void writeNewUser(String pictureUrl) {
-        Workmate workmate = new Workmate(user.getDisplayName(), null, pictureUrl, null, null,false);
-        db.collection("workmates").document(user.getUid()).set(workmate);
+    public void writeNewUser(Workmate workmate, String uid) {
+        db.collection("workmates").document(uid).set(workmate);
     }
 
-    public MutableLiveData<Workmate> getCurrentUserFromDB(){
-        docRefCurrentUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    public MutableLiveData<Workmate> getCurrentUserFromDB(String uid){
+        db.collection("workmates").document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 mutableLiveDataWorkmate.setValue(documentSnapshot.toObject(Workmate.class));

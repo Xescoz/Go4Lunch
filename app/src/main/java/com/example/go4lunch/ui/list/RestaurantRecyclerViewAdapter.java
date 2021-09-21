@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.go4lunch.databinding.ItemRestaurantBinding;
 import com.example.go4lunch.model.Restaurant;
 import com.example.go4lunch.model.Workmate;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,9 +22,9 @@ public class RestaurantRecyclerViewAdapter extends RecyclerView.Adapter<Restaura
     private final Activity activity;
     private final List<Restaurant> restaurantList;
     private final List<Workmate> workmateList;
-    private final Location location;
+    private final LatLng location;
 
-    public RestaurantRecyclerViewAdapter(Activity activity, List<Restaurant> restaurantList, List<Workmate> workmateList, Location location) {
+    public RestaurantRecyclerViewAdapter(Activity activity, List<Restaurant> restaurantList, List<Workmate> workmateList, LatLng location) {
         this.restaurantList = restaurantList;
         this.activity = activity;
         this.workmateList = workmateList;

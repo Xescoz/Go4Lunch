@@ -24,6 +24,7 @@ import com.example.go4lunch.ui.BaseFragment;
 import com.example.go4lunch.ui.MapsFragment;
 import com.example.go4lunch.viewmodel.RestaurantViewModel;
 import com.example.go4lunch.viewmodel.WorkmateViewModel;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +40,7 @@ public class RestaurantListFragment extends BaseFragment {
     private WorkmateViewModel workmateViewModel;
     private FragmentRestaurantListBinding binding;
     private List<Restaurant> restaurantsList = new ArrayList<>();
-    private Location location;
+    private LatLng location;
     private String searchPlaceId;
     private List<Workmate> workmateList = new ArrayList<>();
 
@@ -52,7 +53,7 @@ public class RestaurantListFragment extends BaseFragment {
     }
 
     @Override
-    public void getLocationUser(Location locationUser) {
+    public void getLocationUser(LatLng locationUser) {
         Log.i(TAG, "null: " + searchPlaceId);
             initList(locationUser);
     }
@@ -80,7 +81,7 @@ public class RestaurantListFragment extends BaseFragment {
         binding.restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
-    private void initList(Location location) {
+    private void initList(LatLng location) {
         restaurantViewModel.getRestaurants(location).observe(this, restaurants -> {
             restaurantsList = restaurants.getRestaurantResults();
             this.location = location;

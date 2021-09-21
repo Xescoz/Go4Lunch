@@ -78,7 +78,8 @@ public abstract class BaseFragment extends Fragment {
                     public void onComplete(@NonNull Task<Location> task) {
                         if (task.isSuccessful()) {
                             lastKnownLocation = task.getResult();
-                            getLocationUser(lastKnownLocation);
+                            LatLng location = new LatLng(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+                            getLocationUser(location);
                             Log.d(TAG, "LastKnowLocation " + lastKnownLocation);
 
                         }
@@ -90,5 +91,5 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public abstract void getLocationUser(Location locationUser);
+    public abstract void getLocationUser(LatLng locationUser);
 }
