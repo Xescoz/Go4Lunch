@@ -20,6 +20,7 @@ public class WorkmateViewModel extends ViewModel {
     public WorkmateViewModel() {
         workmateRepository = new WorkmateRepository();
     }
+
     public WorkmateViewModel(WorkmateRepository workmateRepository){
         this.workmateRepository = workmateRepository;
     }

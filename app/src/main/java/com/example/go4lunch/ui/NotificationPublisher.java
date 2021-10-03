@@ -21,15 +21,6 @@ public class NotificationPublisher extends BroadcastReceiver {
 
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
         int id = intent.getIntExtra(NOTIFICATION_ID, 0);
-        /*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelName = "My Background Service";
-            NotificationChannel chan = new NotificationChannel("com.offline.english.dictionary.speech.translator",
-                    channelName, NotificationManager.IMPORTANCE_LOW);
-            chan.setLightColor(Color.BLUE);
-            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-            notificationManager.createNotificationChannel(chan);
-        }*/
 
         notificationManager.notify(id, notification);
     }

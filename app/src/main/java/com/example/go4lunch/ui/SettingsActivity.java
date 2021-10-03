@@ -32,6 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private FirebaseUser user;
+    private static final int HOUR_OF_DAY = 12;
+    private static final int MINUTE = 0;
+    private static final int TIME_MILLIS = 5000;
 
 
     @Override
@@ -85,6 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /** Show notification for the current workmate and search if other workmate will eat here */
     public void showWorkmatesEatingNotification(){
 
         workmateViewModel.getAllUserFromDB(true).observe(this, workmateList -> {
@@ -98,6 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /** Schedule the notification for a certain time */
     private void scheduleNotification(Notification notification) {
 
         Intent notificationIntent = new Intent(this, NotificationPublisher.class);
@@ -108,16 +113,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 26);
+        calendar.set(Calendar.HOUR_OF_DAY, HOUR_OF_DAY);
+        calendar.set(Calendar.MINUTE, MINUTE);
 
-        long futureInMillis = SystemClock.elapsedRealtime() + 5000;
+        long futureInMillis = SystemClock.elapsedRealtime() + TIME_MILLIS;
 
         alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
+    /** Build the notification */
     private Notification getNotification(String workmateEatingHere) {
         if(workmateEatingHere.equals("will eat here."))
             workmateEatingHere = getString(R.string.no_one_eating);

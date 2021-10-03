@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.go4lunch.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -50,18 +51,18 @@ public abstract class BaseFragment extends Fragment {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-
+    /** Ask user to turn location permission if not on */
     @AfterPermissionGranted(PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
     private void getLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this.getContext(), perms)) {
             locationPermissionGranted = true;
             getDeviceLocation();
-            Log.d(TAG, "Permission is true");
         } else {
             // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this, getString(R.string.camera_and_location_rationale),
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION, perms);
+            Toast.makeText(getContext(), R.string.no_location_permission, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -80,8 +81,6 @@ public abstract class BaseFragment extends Fragment {
                             lastKnownLocation = task.getResult();
                             LatLng location = new LatLng(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
                             getLocationUser(location);
-                            Log.d(TAG, "LastKnowLocation " + lastKnownLocation);
-
                         }
                     }
                 });

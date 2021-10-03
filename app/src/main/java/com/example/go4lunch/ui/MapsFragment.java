@@ -32,6 +32,7 @@ import java.util.List;
 public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener {
     private LatLng searchPlacePosition;
     private String searchPlaceName;
+    private String searchPlaceId;
 
     private LatLng location;
     private GoogleMap map;
@@ -52,11 +53,6 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
          */
         @Override
         public void onMapReady(GoogleMap map) {
@@ -65,7 +61,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
             updateLocationUI();
 
             if (searchPlacePosition !=null){
-                moveCameraToRestaurantPosition(searchPlacePosition, searchPlaceName);
+                moveCameraToRestaurantPosition(searchPlacePosition, searchPlaceName, searchPlaceId);
             }
             else {
                 moveCameraToCurrentPosition(location);
@@ -83,6 +79,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
         if (getArguments() != null){
             searchPlacePosition = getArguments().getParcelable("position");
             searchPlaceName = getArguments().getString("name");
+            searchPlaceId = getArguments().getString("placeId");
         }
 
 
@@ -101,6 +98,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
         workmateViewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
     }
 
+    /** Init the list of Restaurants and call the creation of markers for each restaurant */
     private void initRestaurantList(LatLng location) {
         initWorkmateList();
         restaurantViewModel.getRestaurants(location).observe(this, restaurants -> {
@@ -113,6 +111,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
         });
     }
 
+    /** Create the marker on the map */
     private void addMarker(Restaurant restaurant, LatLng position){
         Marker marker;
         if (isGreen(restaurant)){
@@ -130,6 +129,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
         marker.setTag(restaurant.getPlaceId());
     }
 
+    /** Make a marker green if it's selected by someone */
     private Boolean isGreen(Restaurant restaurant){
         boolean isGreen = false;
         for (int i = 0; i < workmateList.size(); i++) {
@@ -157,7 +157,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
         return false;
     }
 
-
+    /** Init the list of workmates */
     private void initWorkmateList(){
         workmateViewModel.getAllUserFromDB(false).observe(getViewLifecycleOwner(), workmateList -> {
             this.workmateList = workmateList;
@@ -171,6 +171,7 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
                 moveCameraToCurrentPosition(locationUser);
     }
 
+    /** Move camera to position of the user. If there is no position set location to Paris */
     private void moveCameraToCurrentPosition(LatLng locationUser){
         if (locationUser != null) {
             map.animateCamera(CameraUpdateFactory
@@ -186,13 +187,18 @@ public class MapsFragment extends BaseFragment implements GoogleMap.OnMarkerClic
 
     }
 
-    private void moveCameraToRestaurantPosition(LatLng locationRestaurant, String name){
+    /** Move camera to position of the restaurant from autocomplete on map */
+    private void moveCameraToRestaurantPosition(LatLng locationRestaurant, String name, String id){
+        Marker marker;
         if (locationRestaurant != null) {
             map.animateCamera(CameraUpdateFactory
                     .newLatLngZoom(locationRestaurant, DEFAULT_ZOOM));
-            map.addMarker(new MarkerOptions()
+            marker = map.addMarker(new MarkerOptions()
                     .position(locationRestaurant)
                     .title(name));
+
+            assert marker != null;
+            marker.setTag(id);
         }
         else {
             Log.d(TAG, "Current location is null. Using defaults.");

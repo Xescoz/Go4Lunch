@@ -82,8 +82,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 .into(binding.restaurantDetailImage);
 
         initRecyclerView();
-        if(workmate!=null)
+        if(workmate!=null){
             initColors();
+            initLikes();
+        }
     }
 
     private void initListener(){
@@ -154,6 +156,28 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             binding.addCurrentRestaurant.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.green_light));
             Log.i(TAG, "Green: ");
         }
+    }
+
+    private void initLikes(){
+        if(checkIfLikedInit()){
+            binding.likeButton.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.colorPrimary));
+        }
+        else {
+            binding.likeButton.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.fui_transparent));
+
+        }
+    }
+
+    private Boolean checkIfLikedInit(){
+        if(workmate.getLikes() == null){
+            return false;
+        }
+        for(int i = 0; i<workmate.getLikes().size();i++)
+            if(workmate.getLikes().get(i).equals(restaurant.getPlaceId())){
+                workmate.getLikes().remove(i);
+                return true;
+            }
+        return false;
     }
 
 

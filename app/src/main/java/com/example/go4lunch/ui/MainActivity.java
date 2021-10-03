@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /** Init place autoComplete */
     private void initAutoComplete() {
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), BuildConfig.GOOGLE_MAPS_KEY, Locale.FRANCE);
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /** Init the profile in the menu */
     private void initProfile() {
         TextView profileName = findViewById(R.id.profile_name);
         TextView profileEmailAddress = findViewById(R.id.profile_email_address);
@@ -172,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                 .into(profilePicture);
     }
 
+    /** Configure the button of the bottomView with each fragment */
     private void configureBottomView() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -199,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /** Configure the button of the NavigationView in the menu */
     private void configureNavigationView() {
         binding.navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
@@ -220,11 +224,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /** Open settings Activity */
     private void openSettings(){
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
 
+    /** Sign out of and go back to login Activity */
     public void signOut() {
         AuthUI.getInstance()
                 .signOut(MainActivity.this)
@@ -237,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-
+    /** Show the detail Activity of the current restaurant */
     private void showDetailActivity() {
         if (workmate.getCurrentRestaurant() != null) {
             Intent intent = new Intent(this, RestaurantDetailActivity.class);
@@ -247,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
         else
             Toast.makeText(MainActivity.this, R.string.no_restaurant_selected, Toast.LENGTH_SHORT).show();
     }
+
 
     private void showFragment(Fragment fragment) {
         fragmentManager.beginTransaction()
@@ -259,12 +266,14 @@ public class MainActivity extends AppCompatActivity {
         binding.appBar.toolbar.setVisibility(View.VISIBLE);
     }
 
+    /** Configure the autocomplete result depending on the current fragment */
     private void autoCompleteSuccess(Place place) {
         switch (fragmentSelected) {
             case "mapsFragment":
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("position", place.getLatLng());
                 bundle.putString("name", place.getName());
+                bundle.putString("placeId", place.getId());
                 MapsFragment mapsFragmentWithArgument = new MapsFragment();
                 mapsFragmentWithArgument.setArguments(bundle);
                 showFragment(mapsFragmentWithArgument);
@@ -285,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
         initDB();
     }
 
+    /** Init the DB with the current workmate, create a new user if it does not exist or update the current user if it exist */
     private void initDB(){
         workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
             this.workmate = workmate;
@@ -296,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
                 workmateViewModel.updateUserDB(getPhoto());
         });
     }
+
     private String getPhoto(){
         String photo = "";
         if (user.getPhotoUrl() != null)

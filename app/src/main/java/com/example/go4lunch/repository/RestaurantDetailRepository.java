@@ -28,7 +28,7 @@ public class RestaurantDetailRepository {
                 //Log.d(TAG, "getRestaurants response="+response );
                 if (response.isSuccessful() && response.body() != null) {
                     Log.d(TAG, "getRestaurants response=" + response);
-                    Log.i(TAG, "onResponse: " + response.body().getRestaurant().getName());
+                    //Log.i(TAG, "onResponse: " + response.body().getRestaurant().getName());
                     mutableLiveData.setValue(response.body().getRestaurant());
                 }
             }

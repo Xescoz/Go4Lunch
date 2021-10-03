@@ -48,5 +48,6 @@
     <string name="will_eat_here">will eat here.</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="no_location_permission">Location permission are denied.Please turn it on.</string>
 
 </resources>

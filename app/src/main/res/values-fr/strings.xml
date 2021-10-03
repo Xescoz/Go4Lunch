@@ -23,9 +23,10 @@
     <string name="like">AIME</string>
     <string name="website">SITE</string>
     <string name="back">Retour</string>
-    <string name="no_restaurant_selected">Aucune restaurant sélectionner pour déjeuner.</string>
+    <string name="no_restaurant_selected">Aucun restaurant sélectionner pour déjeuner.</string>
     <string name="no_one_eating">Personne ne mange ici.</string>
     <string name="will_eat_here">mangera ici.</string>
     <string name="open">Ouvert</string>
     <string name="close">Fermer</string>
+    <string name="no_location_permission">La permission de localisation est bloquer.Veuilliez autoriser la localisation.</string>
 </resources>
