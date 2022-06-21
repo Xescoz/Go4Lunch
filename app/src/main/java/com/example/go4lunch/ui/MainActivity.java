@@ -98,6 +98,34 @@ public class MainActivity extends AppCompatActivity {
         initDB();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initDB();
+    }
+
+    /** Init the DB with the current workmate, create a new user if it does not exist or update the current user if it exist */
+    private void initDB(){
+        workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
+            this.workmate = workmate;
+            if(workmate == null){
+                Workmate workmateToCreate = new Workmate(user.getDisplayName(), null, getPhoto(), null, null,false);
+                workmateViewModel.writeNewUser(workmateToCreate,user.getUid());
+            }
+            else
+                workmateViewModel.updateUserDB(getPhoto());
+        });
+    }
+
+    private String getPhoto(){
+        String photo = "";
+        if (user.getPhotoUrl() != null)
+            photo = user.getPhotoUrl().toString();
+
+        return photo;
+    }
+
+    /** Listener for drawer menu and autocomplete */
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -261,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+    /** Show toolbar and hide autocomplete */
     private void showToolBar() {
         binding.appBar.autocompleteFragment.setVisibility(View.GONE);
         binding.appBar.toolbar.setVisibility(View.VISIBLE);
@@ -288,30 +317,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        initDB();
-    }
-
-    /** Init the DB with the current workmate, create a new user if it does not exist or update the current user if it exist */
-    private void initDB(){
-        workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
-            this.workmate = workmate;
-            if(workmate == null){
-                Workmate workmateToCreate = new Workmate(user.getDisplayName(), null, getPhoto(), null, null,false);
-                workmateViewModel.writeNewUser(workmateToCreate,user.getUid());
-            }
-            else
-                workmateViewModel.updateUserDB(getPhoto());
-        });
-    }
-
-    private String getPhoto(){
-        String photo = "";
-        if (user.getPhotoUrl() != null)
-            photo = user.getPhotoUrl().toString();
-
-        return photo;
-    }
 }

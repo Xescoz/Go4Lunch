@@ -30,7 +30,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public abstract class BaseFragment extends Fragment {
 
-    private static final String TAG = BaseFragment.class.getSimpleName();
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private boolean locationPermissionGranted;
@@ -51,7 +50,7 @@ public abstract class BaseFragment extends Fragment {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    /** Ask user to turn location permission if not on */
+    /** Check if location permission is enabled and ask user to turn on if not */
     @AfterPermissionGranted(PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
     private void getLocationPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};

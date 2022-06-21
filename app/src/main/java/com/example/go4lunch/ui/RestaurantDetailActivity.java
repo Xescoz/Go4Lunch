@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.go4lunch.BuildConfig;
@@ -46,11 +45,12 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         workmateViewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        initDB();
+        initCurrentUserDB();
         initWorkmates();
         initRestaurant();
     }
 
+    /** Init the list of restaurants */
     private void initRestaurant(){
         String placeId = getIntent().getStringExtra("place_id");
 
@@ -61,6 +61,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         });
     }
 
+    /** Init the views and call the initRecyclerView */
     private void initView(){
 
         binding.restaurantDetailName.setText(restaurant.getName());
@@ -83,11 +84,21 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         initRecyclerView();
         if(workmate!=null){
-            initColors();
+            initCurrentRestaurant();
             initLikes();
         }
     }
 
+    /** Init current user from DB */
+    private void initCurrentUserDB(){
+        workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
+            this.workmate = workmate;
+            initListener();
+        });
+
+    }
+
+    /** Init the buttons listeners */
     private void initListener(){
         binding.phoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,33 +132,24 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void initDB(){
-        workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
-            this.workmate = workmate;
-            initListener();
-        });
-
+    /** Init the recyclerView */
+    private void initRecyclerView() {
+        adapter = new RestaurantDetailRecyclerViewAdapter(workmateList,restaurant, this);
+        binding.workmatesRecyclerView.setAdapter(adapter);
+        binding.workmatesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void updateWorkmate(){
-        workmateViewModel.mutableLiveDataCurrentRestaurantIsUpdated.observe(this, isUpdated ->{
-            if(isUpdated)
-                workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
-                    this.workmate = workmate;
-                });
+    /** Init the workmates list */
+    private void initWorkmates(){
+        workmateViewModel.getAllUserFromDB(true).observe(this, workmateList -> {
+            this.workmateList = workmateList;
         });
     }
 
-    private void updateLikes(){
-        workmateViewModel.mutableLiveDataLikesIsUpdated.observe(this, isUpdated ->{
-            if(isUpdated)
-                workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
-                    this.workmate = workmate;
-                });
-        });
-    }
 
-    private void initColors(){
+
+    /** Init the current restaurant button */
+    private void initCurrentRestaurant(){
         if(workmate.getCurrentRestaurant() == null || !restaurant.getPlaceId().equals(workmate.getCurrentRestaurant())){
             binding.addCurrentRestaurant.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.white));
             Log.i(TAG, "White: ");
@@ -158,6 +160,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
     }
 
+    /** Init the likes button */
     private void initLikes(){
         if(checkIfLikedInit()){
             binding.likeButton.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.colorPrimary));
@@ -168,6 +171,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
     }
 
+    /** Check if the current restaurant is already liked for the initLikes */
     private Boolean checkIfLikedInit(){
         if(workmate.getLikes() == null){
             return false;
@@ -180,7 +184,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         return false;
     }
 
-
+    /** Switch current restaurant button and call update DB */
     private void currentRestaurantSwitch(){
         if(workmate.getCurrentRestaurant() == null || !restaurant.getPlaceId().equals(workmate.getCurrentRestaurant())){
             workmateViewModel.updateCurrentRestaurant(restaurant.getPlaceId(),restaurant.getName());
@@ -194,6 +198,21 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         updateWorkmate();
     }
 
+    /** Switch the like button and update the list of likes */
+    private void likesSwitch(){
+        if(checkIfLiked()){
+            workmateViewModel.updateLikes(workmate.getLikes());
+            binding.likeButton.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.fui_transparent));
+        }
+        else {
+            workmateViewModel.updateLikes(workmate.getLikes());
+            binding.likeButton.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.colorPrimary));
+        }
+        //Log.i(TAG, "workmate: " + workmate.getCurrentRestaurant());
+        updateLikes();
+    }
+
+    /** Check if the current restaurant is already liked */
     private Boolean checkIfLiked(){
         if(workmate.getLikes() == null){
             workmate.setLikes(new ArrayList<>());
@@ -210,29 +229,25 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         return false;
     }
 
-
-    private void likesSwitch(){
-        if(checkIfLiked()){
-            workmateViewModel.updateLikes(workmate.getLikes());
-            binding.likeButton.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.fui_transparent));
-        }
-        else {
-            workmateViewModel.updateLikes(workmate.getLikes());
-            binding.likeButton.setColorFilter(ContextCompat.getColor(RestaurantDetailActivity.this, R.color.colorPrimary));
-        }
-        //Log.i(TAG, "workmate: " + workmate.getCurrentRestaurant());
-        updateLikes();
-    }
-
-    private void initRecyclerView() {
-        adapter = new RestaurantDetailRecyclerViewAdapter(workmateList,restaurant, this);
-        binding.workmatesRecyclerView.setAdapter(adapter);
-        binding.workmatesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void initWorkmates(){
-        workmateViewModel.getAllUserFromDB(true).observe(this, workmateList -> {
-            this.workmateList = workmateList;
+    /** Update the current user in DB and activity */
+    private void updateWorkmate(){
+        workmateViewModel.mutableLiveDataCurrentRestaurantIsUpdated.observe(this, isUpdated ->{
+            if(isUpdated)
+                workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
+                    this.workmate = workmate;
+                });
         });
     }
+
+    /** Update the likes of current user in DB and activity */
+    private void updateLikes(){
+        workmateViewModel.mutableLiveDataLikesIsUpdated.observe(this, isUpdated ->{
+            if(isUpdated)
+                workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
+                    this.workmate = workmate;
+                });
+        });
+    }
+
+
 }

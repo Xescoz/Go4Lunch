@@ -25,6 +25,7 @@ public class WorkmateViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void bindWorkmate(Workmate workmate, Context context){
+
         Glide.with(context)
                 .load(workmate.getPicture())
                 .apply(RequestOptions.circleCropTransform())

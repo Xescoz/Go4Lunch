@@ -21,9 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class WorkmatesListFragment extends Fragment {
 
     FragmentWorkmatesBinding binding;

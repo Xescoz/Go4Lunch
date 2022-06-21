@@ -24,12 +24,6 @@ public class RestaurantViewModel extends ViewModel {
         restaurantDetailRepository = new RestaurantDetailRepository();
     }
 
-    public RestaurantViewModel(RestaurantsRepository restaurantsRepository,RestaurantDetailRepository restaurantDetailRepository) {
-        this.restaurantRepository = restaurantsRepository;
-        this.restaurantDetailRepository = restaurantDetailRepository;
-    }
-
-
     public LiveData<RestaurantResults> getRestaurants(LatLng location) {
         mutableLiveDataRestaurantResults = restaurantRepository.requestRestaurants(location);
 

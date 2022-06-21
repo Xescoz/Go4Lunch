@@ -52,6 +52,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    /** Init the button listener */
     private void initListener(){
         binding.notificationSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -80,6 +81,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /** Init workmate from DB */
     private void initDB(){
         workmateViewModel.getCurrentUserFromDB(user.getUid()).observe(this, workmate -> {
             this.workmate = workmate;

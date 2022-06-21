@@ -21,10 +21,6 @@ public class WorkmateViewModel extends ViewModel {
         workmateRepository = new WorkmateRepository();
     }
 
-    public WorkmateViewModel(WorkmateRepository workmateRepository){
-        this.workmateRepository = workmateRepository;
-    }
-
     public LiveData<Workmate> getCurrentUserFromDB(String uid){
         mutableLiveDataWorkmate = workmateRepository.getCurrentUserFromDB(uid);
 

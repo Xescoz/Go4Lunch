@@ -30,14 +30,16 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("SetTextI18n")
     public void bindRestaurant(Restaurant restaurant, List<Workmate> workmateList, LatLng location, Activity activity) {
+
+        /* Set title and address */
         binding.itemRestaurantTitle.setText(restaurant.getName());
         binding.itemRestaurantAddress.setText(restaurant.getAddress());
 
+        /* Set open or close */
         if (restaurant.getOpeningTime() == null) {
             OpenNow closed = new OpenNow(false);
             restaurant.setOpeningTime(closed);
         }
-
         if (restaurant.getOpeningTime().isOpenNow()) {
             binding.itemRestaurantOpenTime.setText(activity.getString(R.string.open));
             binding.itemRestaurantOpenTime.setTextColor(activity.getResources().getColor(R.color.green));
@@ -46,6 +48,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
             binding.itemRestaurantOpenTime.setTextColor(activity.getResources().getColor(R.color.red));
         }
 
+        /* Create location user and restaurant */
         Location locationUser = new Location("location");
         locationUser.setLatitude(location.latitude);
         locationUser.setLongitude(location.longitude);
@@ -55,22 +58,25 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
         restaurantLocation.setLatitude(restaurant.getGeometry().getLocation().getLat());
         restaurantLocation.setLongitude(restaurant.getGeometry().getLocation().getLng());
 
+        /* Set distance */
         if (location != null)
             binding.itemRestaurantDistance.setText(Math.round(locationUser.distanceTo(restaurantLocation)) + " m");
 
-
+        /* Set number of person */
         if (numberOfPerson(workmateList,restaurant) == 0) {
             binding.itemRestaurantNumberPerson.setVisibility(View.GONE);
         } else {
             binding.itemRestaurantNumberPerson.setText(activity.getApplicationContext().getString(R.string.number_of_person, numberOfPerson(workmateList,restaurant)));
         }
 
+        /* Set rating */
         if (restaurant.getRating() == 0)
             binding.itemRestaurantRatingBar.setRating(0);
         else {
             binding.itemRestaurantRatingBar.setRating((restaurant.getRating()/5)*3);
         }
 
+        /* Set photo of restaurant */
         String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&key=" + BuildConfig.GOOGLE_MAPS_KEY;
 
         if (restaurant.getPhotos() != null && restaurant.getPhotos().size() > 0)
@@ -81,6 +87,7 @@ public class RestaurantViewHolder extends RecyclerView.ViewHolder {
                 .error(restaurant.getImage())
                 .into(binding.itemRestaurantImage);
 
+        /* Set on click listener to open detail restaurant */
         binding.itemRestaurantLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

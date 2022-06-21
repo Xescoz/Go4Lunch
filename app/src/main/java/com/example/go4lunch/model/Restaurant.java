@@ -57,15 +57,10 @@ public class Restaurant {
      */
     private float rating;
 
-    /**
-     * Number of person in the restaurant
-     */
-    private int numberPersons;
-
     public Restaurant() {
     }
 
-    public Restaurant(String place_id, String name, String address, String image, Geometry geometry, OpenNow openingTime, float rating, int numberPersons, List<Photo> photos, String phoneNumber, String website) {
+    public Restaurant(String place_id, String name, String address, String image, Geometry geometry, OpenNow openingTime, float rating, List<Photo> photos, String phoneNumber, String website) {
         this.placeId = place_id;
         this.name = name;
         this.address = address;
@@ -73,7 +68,6 @@ public class Restaurant {
         this.geometry = geometry;
         this.openingTime = openingTime;
         this.rating = rating;
-        this.numberPersons = numberPersons;
         this.photos = photos;
         this.phoneNumber = phoneNumber;
         this.website = website;
@@ -109,14 +103,6 @@ public class Restaurant {
 
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
-    }
-
-    public int getNumberPersons() {
-        return numberPersons;
-    }
-
-    public void setNumberPersons(int numberPersons) {
-        this.numberPersons = numberPersons;
     }
 
     public String getPlaceId() {

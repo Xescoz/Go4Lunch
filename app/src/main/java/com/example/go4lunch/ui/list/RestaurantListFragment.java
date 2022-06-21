@@ -1,15 +1,11 @@
 package com.example.go4lunch.ui.list;
 
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,10 +14,8 @@ import android.view.ViewGroup;
 
 import com.example.go4lunch.databinding.FragmentRestaurantListBinding;
 import com.example.go4lunch.model.Restaurant;
-import com.example.go4lunch.model.RestaurantResults;
 import com.example.go4lunch.model.Workmate;
 import com.example.go4lunch.ui.BaseFragment;
-import com.example.go4lunch.ui.MapsFragment;
 import com.example.go4lunch.viewmodel.RestaurantViewModel;
 import com.example.go4lunch.viewmodel.WorkmateViewModel;
 import com.google.android.gms.maps.model.LatLng;
@@ -53,12 +47,6 @@ public class RestaurantListFragment extends BaseFragment {
     }
 
     @Override
-    public void getLocationUser(LatLng locationUser) {
-        Log.i(TAG, "null: " + searchPlaceId);
-            initList(locationUser);
-    }
-
-    @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWorkmate();
@@ -67,12 +55,13 @@ public class RestaurantListFragment extends BaseFragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "null: " + getArguments());
-        if (getArguments() != null)
-            searchPlaceId = getArguments().getString("place_id");
-
         binding = FragmentRestaurantListBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void getLocationUser(LatLng locationUser) {
+        initRestaurantList(locationUser);
     }
 
     private void initRecyclerView() {
@@ -81,7 +70,7 @@ public class RestaurantListFragment extends BaseFragment {
         binding.restaurantRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
     }
 
-    private void initList(LatLng location) {
+    private void initRestaurantList(LatLng location) {
         restaurantViewModel.getRestaurants(location).observe(this, restaurants -> {
             restaurantsList = restaurants.getRestaurantResults();
             this.location = location;
