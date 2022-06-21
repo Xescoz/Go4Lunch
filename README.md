@@ -19,8 +19,6 @@ An Android App to find a place to eat with your coworker. You can
 ## Library
 * [Androidx Library](https://developer.android.com/jetpack/androidx)
 * [Glide](https://github.com/bumptech/glide/)
-* [Gson](https://github.com/google/gson/)
-* [RobotElectric](https://github.com/robolectric/robolectric)
 * [Easy Permissions](https://github.com/googlesamples/easypermissions)
 * [Espresso](https://developer.android.com/training/testing/espresso)
 * [Cloud Firestore](https://firebase.google.com/docs/firestore)
